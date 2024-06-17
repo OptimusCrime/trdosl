@@ -24,7 +24,7 @@ class AuthController(
         method = [RequestMethod.POST],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    @CrossOrigin(origins = ["http://localhost:3000"])
+    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net"])
     @ResponseBody
     fun postAuth(
         @RequestHeader("x-trdosl-password") password: String

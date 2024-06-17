@@ -1,15 +1,15 @@
 logging:
   level:
-    root: debug
+    root: ${LOGGING:debug}
 
 spring:
   application:
     name: trdosl
 
   datasource:
-    url: jdbc:postgresql://localhost:5488/trdosl-db
-    username: trdosl
-    password: trdosl
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5488}/${DB_NAME:trdosl-db}
+    username: ${DB_USER:trdosl}
+    password: ${DB_PASSWORD:trdosl}
     driver-class-name: org.postgresql.Driver
 
   jpa:

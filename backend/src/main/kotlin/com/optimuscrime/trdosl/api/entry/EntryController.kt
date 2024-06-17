@@ -30,7 +30,7 @@ class EntryController(
         method = [RequestMethod.GET],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    @CrossOrigin(origins = ["http://localhost:3000"])
+    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net"])
     @ResponseBody
     fun getEntries(): DTOEntriesResponse {
         try {
@@ -55,7 +55,7 @@ class EntryController(
         method = [RequestMethod.POST],
         consumes = ["application/json"]
     )
-    @CrossOrigin(origins = ["http://localhost:3000"])
+    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun createEntry(
         @RequestBody body: DTOEntryCreatePayload,
@@ -93,7 +93,7 @@ class EntryController(
         "/v1/entry/{entryId}",
         method = [RequestMethod.DELETE],
     )
-    @CrossOrigin(origins = ["http://localhost:3000"])
+    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteEntry(
         @PathVariable(value = "entryId") entryId: Int,
