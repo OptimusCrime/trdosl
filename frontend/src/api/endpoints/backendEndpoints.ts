@@ -1,0 +1,66 @@
+import ky, { HTTPError } from 'ky';
+
+import { deleteCookie } from '../../auth';
+import { addAuthHeaders } from '../addAuthHeaders';
+import { HttpStatus } from '../httpStatus';
+import { BackendEndpoints } from './backendEndpoints.types';
+
+// Why did I over-engineer this soo much
+interface WhitelistItem {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  regex: RegExp;
+}
+
+const WHITELISTED_AUTH_ERROR_ITEMS: WhitelistItem[] = [
+  {
+    method: 'GET',
+    regex: /v1\/accounts$/,
+  },
+  {
+    method: 'POST',
+    regex: /v1\/account\/[0-9]+$/,
+  },
+  {
+    method: 'GET',
+    regex: /v1\/user\/init$/,
+  },
+];
+
+const api = ky.create({
+  prefixUrl: process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8080',
+  hooks: {
+    beforeRequest: [addAuthHeaders],
+    beforeError: [
+      async (error: HTTPError) => {
+        if (error.response.status === HttpStatus.Forbidden) {
+          for (const item of WHITELISTED_AUTH_ERROR_ITEMS) {
+            if (
+              error.request.method.toUpperCase() === item.method.toUpperCase() &&
+              error.request.url.match(item.regex)
+            ) {
+              return error;
+            }
+          }
+
+          deleteCookie();
+
+          // Because why the fuck not
+          // window.location.replace(URLS.LOGIN);
+        }
+
+        return error;
+      },
+    ],
+  },
+  retry: 0,
+});
+
+///////////////////////////////////////////////////////////////////////
+// Entries
+///////////////////////////////////////////////////////////////////////
+
+export const getEntries = () =>
+  api
+    .get('v1/entries')
+    .json<BackendEndpoints.Entries.GET>()
+    .then((res) => res.data);

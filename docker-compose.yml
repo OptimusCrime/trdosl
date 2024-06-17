@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  trdosl-postgres:
+    image: postgres:14.9
+    restart: always
+    environment:
+      POSTGRES_USER: trdosl
+      POSTGRES_PASSWORD: trdosl
+      POSTGRES_DB: trdosl-db
+    ports:
+      - '5488:5432'
+    networks:
+      - postgres
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  postgres:
+    driver: bridge
