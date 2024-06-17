@@ -9,5 +9,5 @@ RUN chmod 644 /etc/nginx/conf.d/site.conf \
     && rm /etc/nginx/conf.d/default.conf
 
 RUN if [ $ENV = "prod" ] ; then \
-    sed -i 's/trdosl-spring-boot/trdosl-spring-boot-prod/g' /etc/nginx/conf.d/site.conf ; \
+    sed -i 's/trdosl-java/trdosl-java-prod/g' /etc/nginx/conf.d/site.conf ; \
 fi ;

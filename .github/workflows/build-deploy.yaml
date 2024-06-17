@@ -68,7 +68,7 @@ jobs:
           ENV: prod
         with:
           registry: https://ghcr.io
-          name: optimuscrime/trdosl/trdosl-spring-boot
+          name: optimuscrime/trdosl/trdosl-java
           username: ${{ github.actor }}
           password: ${{ secrets.REGISTRY_TOKEN }}
           dockerfile: docker_java.Dockerfile
