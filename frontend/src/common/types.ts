@@ -4,6 +4,7 @@ export interface Entry {
   runDate: string;
   runDistance: number;
   runTime: string;
+  comment: string | null;
   createdAt: string;
 }
 

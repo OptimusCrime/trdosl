@@ -58,6 +58,17 @@ export const getEntries = () =>
     .json<BackendEndpoints.Entries.GET>()
     .then((res) => res.data);
 
+export const postEntry = (params: BackendEndpoints.Entries.POST.Payload) =>
+  api
+    .post('v1/entry', {
+      json: params,
+    }).then(() => Promise.resolve());
+
+export const deleteEntry = (id: number) =>
+  api
+    .delete(`v1/entry/${id}`, {
+    }).then(() => Promise.resolve());
+
 ///////////////////////////////////////////////////////////////////////
 // Auth
 ///////////////////////////////////////////////////////////////////////

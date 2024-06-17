@@ -5,6 +5,7 @@ import {deleteCookie, getCookie} from "../auth";
 import {URLS} from '../utils/urls';
 import {showModal} from "../utils/modal";
 import {LOGIN_MODAL_ID} from "../components/LogInModal";
+import {ADD_MODAL_ID} from "../components";
 
 export const Menu = () => {
   const history = useHistory();
@@ -49,8 +50,7 @@ export const Menu = () => {
                 className="normal-case text-sm"
                 onClick={(e) => {
                   e.preventDefault();
-
-                  // Lorem ipsum
+                  showModal(ADD_MODAL_ID);
                 }}
               >
                 Legg til

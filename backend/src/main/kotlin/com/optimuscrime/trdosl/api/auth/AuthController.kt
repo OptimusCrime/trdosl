@@ -1,8 +1,8 @@
 package com.optimuscrime.trdosl.api.auth
 
-import com.optimuscrime.trdosl.api.entry.dto.entry.AuthData
-import com.optimuscrime.trdosl.api.entry.dto.entry.DTOAuthResponse
-import com.optimuscrime.trdosl.services.db.auth.AuthService
+import com.optimuscrime.trdosl.api.auth.dto.AuthData
+import com.optimuscrime.trdosl.api.auth.dto.DTOAuthResponse
+import com.optimuscrime.trdosl.services.auth.AuthService
 import com.optimuscrime.trdosl.services.db.exceptions.AuthorizationException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

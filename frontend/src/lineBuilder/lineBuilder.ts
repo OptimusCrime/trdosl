@@ -23,26 +23,29 @@ export const buildFragments = (params: {
   for (let i = 0; i < entriesNum; i++) {
     const entry = entries[i];
 
-    const points = constructFragments({
+    const { points, distance } = constructFragments({
       targetDistance: entry.runDistance,
       iterator: it,
     })
 
     fragments.push({
-      points: points,
       entry: entry,
+      points: points,
+      distance: distance,
       currentPosition: i === (entriesNum - 1),
     });
   }
 
   // Create fragment for the remaining line
+  const remaining = constructFragments({
+    targetDistance: null,
+    iterator: it,
+  });
 
   fragments.push({
-    points: constructFragments({
-      targetDistance: null,
-      iterator: it,
-    }),
     entry: null,
+    points: remaining.points,
+    distance: remaining.distance,
 
     // If we have zero entries, then we're at the start
     currentPosition: entriesNum === 0,
@@ -54,10 +57,10 @@ export const buildFragments = (params: {
 const constructFragments = (params: {
   targetDistance: number | null;
   iterator: LatLngIterator;
-}): LatLng[] => {
+}): { points: LatLng[]; distance: number; } => {
   const {targetDistance, iterator: it} = params;
 
-  const output: LatLng[] = [];
+  const points: LatLng[] = [];
 
   let totalDistance = 0;
 
@@ -75,7 +78,7 @@ const constructFragments = (params: {
       totalDistance += stepDistance;
 
       // 2. Add the point to the list of points
-      output.push(it.get());
+      points.push(it.get());
 
       // 3. Forward the iterator
       it.goForwards();
@@ -87,7 +90,7 @@ const constructFragments = (params: {
     // intermediate point, and continue from there.
 
     // 1. Add the current point to the list of points in this fragment
-    output.push(it.get());
+    points.push(it.get());
 
     // 2. Calculate the position of the intermediate point, between the current and next point, using the
     //    remaining distance.
@@ -101,13 +104,19 @@ const constructFragments = (params: {
     //    as the initial point for the next fragment.
     it.insert(intermediatePoint);
 
-    // 4. Advance the iterator one step, so that the current point is not evaluated twice
+    // 4. Add the remaining length
+    totalDistance += stepDistance;
+
+    // 5. Advance the iterator one step, so that the current point is not evaluated twice
     it.goForwards();
 
-    // 5. Add the intermediate point to the list of points in this fragment
-    output.push(intermediatePoint);
+    // 6. Add the intermediate point to the list of points in this fragment
+    points.push(intermediatePoint);
     break;
   }
 
-  return output;
+  return {
+    points: points,
+    distance: totalDistance,
+  };
 }

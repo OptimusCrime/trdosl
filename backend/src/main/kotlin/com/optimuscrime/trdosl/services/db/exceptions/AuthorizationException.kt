@@ -1,3 +1,3 @@
 package com.optimuscrime.trdosl.services.db.exceptions
 
-class AuthorizationException() : Exception()
+class AuthorizationException : Exception()

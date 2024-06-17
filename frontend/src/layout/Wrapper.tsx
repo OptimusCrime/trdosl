@@ -1,10 +1,10 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import {Map} from '../pages';
+import {AddModal, LoginModal} from "../components";
+import {Entries, Map} from '../pages';
 import {URLS} from '../utils/urls';
 import {Header} from './Header';
-import {LoginModal} from "../components/LogInModal";
 
 export const Wrapper = () => (
   <div className="container max-w-none">
@@ -14,9 +14,13 @@ export const Wrapper = () => (
       </div>
     </div>
     <LoginModal/>
+    <AddModal />
     <Switch>
       <Route exact path={URLS.MAP}>
         <Map/>
+      </Route>
+      <Route exact path={URLS.ENTRIES}>
+        <Entries/>
       </Route>
       <Route path="*">
         <p>Page not found</p>

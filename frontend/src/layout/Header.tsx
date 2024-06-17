@@ -1,13 +1,18 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 
+import {deleteCookie, getCookie} from "../auth";
+import {ADD_MODAL_ID, LOGIN_MODAL_ID} from "../components";
+import {useAppSelector} from "../store/hooks";
+import {ReducerNames} from "../store/reducers/reducerNames";
+import { formatDistance } from '../utils/dataFormatters';
+import {showModal} from "../utils/modal";
 import { URLS } from '../utils/urls';
 import { Menu } from './Menu';
-import {deleteCookie, getCookie} from "../auth";
-import {showModal} from "../utils/modal";
-import {LOGIN_MODAL_ID} from "../components/LogInModal";
 
 export const Header = () => {
+  const { distanceRemaining, distanceCompleted } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
+
   const history = useHistory();
   const location = useLocation();
   const path = location.pathname;
@@ -63,8 +68,7 @@ export const Header = () => {
                     className="normal-case text-sm"
                     onClick={(e) => {
                       e.preventDefault();
-
-                      // Lorem ipsum dolor sit
+                      showModal(ADD_MODAL_ID);
                     }}
                   >
                     Legg til
@@ -112,6 +116,13 @@ export const Header = () => {
         >
           TRD-OSL
         </a>
+      </div>
+      <div className="text-center lg:w-[400px]">
+        {distanceRemaining && distanceCompleted && (
+          <>
+            {formatDistance(distanceCompleted)} / {formatDistance(distanceRemaining)}
+          </>
+        )}
       </div>
       <Menu/>
     </div>

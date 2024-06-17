@@ -5,9 +5,9 @@ import {Modal} from "../../../components";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import {setEntryModal} from "../../../store/reducers/globalReducer";
 import {ReducerNames} from "../../../store/reducers/reducerNames";
-import {hideModal} from "../../../utils/modal";
+import {formatDistance, formatEntryType, formatSplit, formatTime} from "../../../utils/dataFormatters";
 import {formatDate} from "../../../utils/date";
-import {formatDistance, formatEntryType, formatSplit} from "../../../utils/dataFormatters";
+import {hideModal} from "../../../utils/modal";
 
 export const ENTRY_MODAL_ID = 'entry_modal_id';
 
@@ -47,11 +47,19 @@ const EntryModalInner = (props: EntryModalProps) => {
       <div className="flex flex-col pt-4">
         <div className="flex flex-col space-y-2">
           <p>Distanse: {formatDistance(entry.runDistance)}</p>
-          <p>Tid: {entry.runTime}</p>
+          <p>Tid: {formatTime(entry.runTime)}</p>
           <p>Split: {formatSplit({ distance: entry.runDistance, time: entry.runTime})}</p>
-          <div className="">
+          <div className="py-2">
             <p>Kommentar:</p>
-            <p><i>Ingen kommentar</i></p>
+            <div className="flex flex-col space-y-2 py-2 px-2 border-[1px] rounded mt-2">
+              {entry.comment === null
+                ? (<p><i>Ingen kommentar</i></p>)
+                : entry.comment
+                  .split(/\r?\n/)
+                  .filter(line => line.length > 0)
+                  .map((line, idx) => <p key={idx}>{line}</p>)
+              }
+            </div>
           </div>
         </div>
         <div className="flex flex-row mt-4 justify-end">

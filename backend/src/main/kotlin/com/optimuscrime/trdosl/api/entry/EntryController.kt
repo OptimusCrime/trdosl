@@ -1,8 +1,10 @@
 package com.optimuscrime.trdosl.api.entry
 
-import com.optimuscrime.trdosl.api.entry.dto.entry.DTOEntriesResponse
+import com.optimuscrime.trdosl.api.entry.dto.DTOEntriesResponse
+import com.optimuscrime.trdosl.api.entry.dto.DTOEntryCreatePayload
 import com.optimuscrime.trdosl.services.db.DbService
-import com.optimuscrime.trdosl.services.db.auth.AuthService
+import com.optimuscrime.trdosl.services.auth.AuthService
+import com.optimuscrime.trdosl.services.db.domain.CreateEntry
 import com.optimuscrime.trdosl.services.db.exceptions.AuthorizationException
 import com.optimuscrime.trdosl.services.db.exceptions.ResourceNotFoundException
 import org.slf4j.Logger
@@ -13,6 +15,8 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+
+val runTimeExpression = """^[0-9]{2}:[0-9]{2}:[0-9]{2}$""".toRegex()
 
 @Controller
 class EntryController(
@@ -41,7 +45,46 @@ class EntryController(
                 throw ResponseStatusException(HttpStatus.NOT_FOUND)
             }
 
-            logger.error("Caught unexpected error when trying to return tournament information", ex)
+            logger.error("Caught unexpected error when trying to return entries", ex)
+            throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @RequestMapping(
+        "/v1/entry",
+        method = [RequestMethod.POST],
+        consumes = ["application/json"]
+    )
+    @CrossOrigin(origins = ["http://localhost:3000"])
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun createEntry(
+        @RequestBody body: DTOEntryCreatePayload,
+        @RequestHeader("authorization") authorizationHeader: String
+    ) {
+        try {
+            authService.verifyAuthorization(authorizationHeader)
+
+            // Make sure that the time matches expected format
+            if (!runTimeExpression.matches(body.runTime)) {
+                logger.debug("Run time contains invalid data: ${body.runTime}")
+                throw ResponseStatusException(HttpStatus.BAD_REQUEST)
+            }
+
+            dbService.createEntry(
+                CreateEntry(
+                    type = body.type,
+                    runTime = body.runTime,
+                    runDistance = body.runDistance,
+                    comment = body.comment
+                )
+            )
+        } catch (ex: Exception) {
+            if (ex is AuthorizationException) {
+                logger.debug("User is trying to create an entry, but failed authorization")
+                throw ResponseStatusException(HttpStatus.FORBIDDEN)
+            }
+
+            logger.error("Caught unexpected error when trying to create an entry", ex)
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -74,7 +117,7 @@ class EntryController(
                 throw ResponseStatusException(HttpStatus.NOT_FOUND)
             }
 
-            logger.error("Caught unexpected error when trying to return tournament information", ex)
+            logger.error("Caught unexpected error when trying to delete an entry", ex)
             throw ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

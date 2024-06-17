@@ -1,4 +1,4 @@
-package com.optimuscrime.trdosl.services.db.auth
+package com.optimuscrime.trdosl.services.auth
 
 import com.optimuscrime.trdosl.services.db.exceptions.AuthorizationException
 import org.slf4j.Logger

@@ -5,7 +5,7 @@ import {Entry} from "../../../common/types";
 import data from "../../../data/data.json";
 import {buildFragments} from "../../../lineBuilder";
 import {useAppDispatch} from "../../../store/hooks";
-import {setEntryModal} from "../../../store/reducers/globalReducer";
+import {setDistances, setEntryModal} from "../../../store/reducers/globalReducer";
 import {showModal} from "../../../utils/modal";
 import {ENTRY_MODAL_ID} from "./EntryModal";
 
@@ -30,8 +30,19 @@ export const EntriesMap = (props: EntriesMapProps) => {
       return;
     }
 
+    // Calculate the progress (this will be displayed in the header)
+    let completedDistance = 0;
+    let remainingDistance = 0;
+
     let currentPosition = fragments[0].points[0];
     for (const fragment of fragments) {
+      if (fragment.entry) {
+        completedDistance += fragment.distance;
+      }
+      else {
+        remainingDistance = fragment.distance;
+      }
+
       const path = new google.maps.Polyline({
         path: fragment.points,
         geodesic: true,
@@ -84,7 +95,13 @@ export const EntriesMap = (props: EntriesMapProps) => {
       lng: currentPosition.lng
     });
 
-  }, [map]);
+    // Set the progress
+    dispatch(setDistances({
+      remaining: remainingDistance,
+      completed: completedDistance
+    }));
+
+  }, [map, entries]);
 
   return (
     <Map

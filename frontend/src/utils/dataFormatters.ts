@@ -26,6 +26,23 @@ export const formatDistance = (value: number): string => {
   return `${Number(value / 1000).toFixed(2)} km`;
 }
 
+export const formatTime = (time: string): string => {
+  const split = time.split(':');
+
+  // This should never happen
+  if (split.length !== 3) {
+    return time;
+  }
+
+  // Hide hour if we run under an hour
+  if (split[0] === "00") {
+    return `${split[1]}:${split[2]}`;
+  }
+
+  // Ran for more than an hour (can't be right?)
+  return `${split[0]}:${split[1]}:${split[2]}`;
+}
+
 export const formatSplit = (params: { time: string; distance: number}): string => {
   // This is probably a pretty stupid way to calculate this...
   const { time, distance } = params;
@@ -42,21 +59,10 @@ export const formatSplit = (params: { time: string; distance: number}): string =
 const getTotalSeconds = (time: string): number => {
   const split = time.split(':');
 
-  // Just seconds
-  if (split.length === 1) {
-    return parseInt(split[0]);
+  // What in the
+  if (split.length !== 3) {
+    return 0;
   }
 
-  // Minutes and seconds
-  if (split.length === 2) {
-    return (parseInt(split[0]) * 60) + parseInt(split[1]);
-  }
-
-  // Hours, minutes and seconds
-  if (split.length === 3) {
-    return (parseInt(split[0]) * (60 * 60)) + (parseInt(split[1]) * 60) + parseInt(split[2]);
-  }
-
-  // What have you done...?
-  return 0;
+  return (parseInt(split[0]) * (60 * 60)) + (parseInt(split[1]) * 60) + parseInt(split[2]);
 }

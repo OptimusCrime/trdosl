@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 
 import {useAuth} from "../api/queries/auth";
-import {XIcon} from "../icons";
-import {Modal} from "./Modal";
 import {setCookie} from "../auth";
+import {XIcon} from "../icons";
 import {URLS} from "../utils/urls";
+import {Modal} from "./Modal";
 
-export const LOGIN_MODAL_ID = 'entry_modal_id';
+export const LOGIN_MODAL_ID = 'login_modal_id';
 
 export const LoginModal = () => {
   const auth = useAuth();

@@ -13,12 +13,17 @@ const globalReducer = createSlice({
     setEntryModal(state, action: PayloadAction<number | null>) {
       state.entryModal = action.payload;
     },
+    setDistances(state, action: PayloadAction<{ completed: number; remaining: number;}>) {
+      state.distanceCompleted = action.payload.completed;
+      state.distanceRemaining = action.payload.remaining;
+    },
   },
 });
 
 export const {
   resetState,
   setEntryModal,
+  setDistances,
 } = globalReducer.actions;
 
 export default globalReducer.reducer;
