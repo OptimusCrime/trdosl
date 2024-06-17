@@ -12,7 +12,7 @@ export const LoginModal = () => {
   const auth = useAuth();
   const [password, setPassword] = useState<string>('');
 
-  const continueCallback = () => {
+  const authCallback = () => {
     auth.mutate({
       password: password,
     }, {
@@ -40,13 +40,13 @@ export const LoginModal = () => {
             onChange={(e) => setPassword(e.target.value)}
             onKeyUp={(e) => {
               if (e.code.toLowerCase() === 'enter') {
-                continueCallback();
+                authCallback();
               }
             }}
           />
         </div>
         <div className="w-full flex justify-end">
-          <button className="btn btn-primary" disabled={auth.isLoading} onClick={continueCallback}>
+          <button className="btn btn-primary" disabled={auth.isLoading} onClick={authCallback}>
             {auth.isLoading ? <span className="loading loading-spinner"></span> : 'Logg inn'}
           </button>
         </div>
