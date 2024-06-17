@@ -1,4 +1,4 @@
-import {Entry, LatLng} from "../common/types";
+import { Entry, LatLng } from '../common/types';
 
 export interface LineBuilderFragment {
   points: LatLng[];

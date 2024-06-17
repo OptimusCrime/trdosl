@@ -1,6 +1,6 @@
-import {useMutation} from "@tanstack/react-query";
+import { useMutation } from '@tanstack/react-query';
 
-import { api } from "../endpoints";
+import { api } from '../endpoints';
 
 export const useAuth = () =>
   useMutation({

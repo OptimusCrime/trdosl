@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {useAuth} from "../api/queries/auth";
-import {setCookie} from "../auth";
-import {XIcon} from "../icons";
-import {URLS} from "../utils/urls";
-import {Modal} from "./Modal";
+import { useAuth } from '../api/queries/auth';
+import { setCookie } from '../auth';
+import { XIcon } from '../icons';
+import { URLS } from '../utils/urls';
+import { Modal } from './Modal';
 
 export const LOGIN_MODAL_ID = 'login_modal_id';
 
@@ -13,16 +13,19 @@ export const LoginModal = () => {
   const [password, setPassword] = useState<string>('');
 
   const authCallback = () => {
-    auth.mutate({
-      password: password,
-    }, {
-      onSuccess: (data) => {
-        setCookie(data.token);
+    auth.mutate(
+      {
+        password: password,
+      },
+      {
+        onSuccess: (data) => {
+          setCookie(data.token);
 
-        // Lol (I am lazy)
-        window.location.replace(URLS.MAP);
-      }
-    });
+          // Lol (I am lazy)
+          window.location.replace(URLS.MAP);
+        },
+      },
+    );
   };
 
   return (
@@ -52,11 +55,11 @@ export const LoginModal = () => {
         </div>
         {auth.isError && (
           <div role="alert" className="alert alert-error">
-            <XIcon/>
+            <XIcon />
             <span>Feil passord.</span>
           </div>
         )}
       </div>
     </Modal>
   );
-}
+};

@@ -15,6 +15,7 @@ export const MONTHS = [
   'desember',
 ];
 
-export const addLeadingZero = (value: number): string => value < 10 ? `0${value}` : `${value}`;
+export const addLeadingZero = (value: number): string => (value < 10 ? `0${value}` : `${value}`);
 
-export const formatDate = (date: Date): string => `${WEEKDAYS[date.getDay()]} ${date.getDate()}. ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
+export const formatDate = (date: Date): string =>
+  `${WEEKDAYS[date.getDay()]} ${date.getDate()}. ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;

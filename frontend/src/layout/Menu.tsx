@@ -1,17 +1,17 @@
 import React from 'react';
-import {useHistory, useLocation} from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 
-import {deleteCookie, getCookie} from "../auth";
-import {URLS} from '../utils/urls';
-import {showModal} from "../utils/modal";
-import {LOGIN_MODAL_ID} from "../components/LogInModal";
-import {ADD_MODAL_ID} from "../components";
+import { deleteCookie, getCookie } from '../auth';
+import { ADD_MODAL_ID } from '../components';
+import { LOGIN_MODAL_ID } from '../components/LogInModal';
+import { showModal } from '../utils/modal';
+import { URLS } from '../utils/urls';
 
 export const Menu = () => {
   const history = useHistory();
   const location = useLocation();
   const path = location.pathname;
-  const signedIn = getCookie() !== "";
+  const signedIn = getCookie() !== '';
 
   return (
     <div className="navbar-end hidden lg:flex">

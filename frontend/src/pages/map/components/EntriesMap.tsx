@@ -1,13 +1,13 @@
-import {Map, useMap} from "@vis.gl/react-google-maps";
-import React, {useEffect} from "react";
+import { Map, useMap } from '@vis.gl/react-google-maps';
+import React, { useEffect } from 'react';
 
-import {Entry} from "../../../common/types";
-import data from "../../../data/data.json";
-import {buildFragments} from "../../../lineBuilder";
-import {useAppDispatch} from "../../../store/hooks";
-import {setDistances, setEntryModal} from "../../../store/reducers/globalReducer";
-import {showModal} from "../../../utils/modal";
-import {ENTRY_MODAL_ID} from "./EntryModal";
+import { Entry } from '../../../common/types';
+import data from '../../../data/data.json';
+import { buildFragments } from '../../../lineBuilder';
+import { useAppDispatch } from '../../../store/hooks';
+import { setDistances, setEntryModal } from '../../../store/reducers/globalReducer';
+import { showModal } from '../../../utils/modal';
+import { ENTRY_MODAL_ID } from './EntryModal';
 
 interface EntriesMapProps {
   entries: Entry[];
@@ -16,7 +16,7 @@ interface EntriesMapProps {
 export const EntriesMap = (props: EntriesMapProps) => {
   const dispatch = useAppDispatch();
 
-  const {entries} = props;
+  const { entries } = props;
 
   const fragments = buildFragments({
     entries: entries,
@@ -38,8 +38,7 @@ export const EntriesMap = (props: EntriesMapProps) => {
     for (const fragment of fragments) {
       if (fragment.entry) {
         completedDistance += fragment.distance;
-      }
-      else {
+      } else {
         remainingDistance = fragment.distance;
       }
 
@@ -48,7 +47,7 @@ export const EntriesMap = (props: EntriesMapProps) => {
         geodesic: true,
 
         // Use a random color if the polyline is for an entry. The remaining line should always be red
-        strokeColor: fragment.entry ? '#' + (Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0') : '#d22b2b',
+        strokeColor: fragment.entry ? '#' + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') : '#d22b2b',
         strokeOpacity: 1.0,
         strokeWeight: 4,
       });
@@ -57,8 +56,7 @@ export const EntriesMap = (props: EntriesMapProps) => {
         if (fragment.entry === null) {
           // If we're starting, then we should use the very first point, and not the last
           currentPosition = fragment.points[0];
-        }
-        else {
+        } else {
           currentPosition = fragment.points[fragment.points.length - 1];
         }
       }
@@ -92,15 +90,16 @@ export const EntriesMap = (props: EntriesMapProps) => {
     // Set the default position to where we currently are on the road
     map.setCenter({
       lat: currentPosition.lat,
-      lng: currentPosition.lng
+      lng: currentPosition.lng,
     });
 
     // Set the progress
-    dispatch(setDistances({
-      remaining: remainingDistance,
-      completed: completedDistance
-    }));
-
+    dispatch(
+      setDistances({
+        remaining: remainingDistance,
+        completed: completedDistance,
+      }),
+    );
   }, [map, entries]);
 
   return (
@@ -115,4 +114,4 @@ export const EntriesMap = (props: EntriesMapProps) => {
       disableDefaultUI={true}
     />
   );
-}
+};

@@ -9,9 +9,9 @@ export interface Entry {
 }
 
 export enum EntryType {
-  RUN = "RUN",
-  WALK = "WALK",
-  THREADMILL = "THREADMILL",
+  RUN = 'RUN',
+  WALK = 'WALK',
+  THREADMILL = 'THREADMILL',
 }
 
 export interface LatLng {

@@ -1,14 +1,11 @@
-import {Entry, LatLng} from "../common/types";
-import {calculateDistance} from "../utils/calculateDistance";
-import {calculateIntermediatePoint} from "../utils/calculateIntermediatePoint";
-import {LatLngIterator} from "./LatLngIterator";
-import {LineBuilderFragment} from "./types";
+import { Entry, LatLng } from '../common/types';
+import { calculateDistance } from '../utils/calculateDistance';
+import { calculateIntermediatePoint } from '../utils/calculateIntermediatePoint';
+import { LatLngIterator } from './LatLngIterator';
+import { LineBuilderFragment } from './types';
 
-export const buildFragments = (params: {
-  entries: Entry[];
-  points: LatLng[];
-}): LineBuilderFragment[] => {
-  const {entries, points} = params;
+export const buildFragments = (params: { entries: Entry[]; points: LatLng[] }): LineBuilderFragment[] => {
+  const { entries, points } = params;
 
   // Sort the entries from oldest to newest, working our way from the start to the end
   const sortedEntries = entries.sort((a, b) => new Date(a.runDate).getTime() - new Date(b.runDate).getTime());
@@ -26,13 +23,13 @@ export const buildFragments = (params: {
     const { points, distance } = constructFragments({
       targetDistance: entry.runDistance,
       iterator: it,
-    })
+    });
 
     fragments.push({
       entry: entry,
       points: points,
       distance: distance,
-      currentPosition: i === (entriesNum - 1),
+      currentPosition: i === entriesNum - 1,
     });
   }
 
@@ -52,13 +49,13 @@ export const buildFragments = (params: {
   });
 
   return fragments;
-}
+};
 
 const constructFragments = (params: {
   targetDistance: number | null;
   iterator: LatLngIterator;
-}): { points: LatLng[]; distance: number; } => {
-  const {targetDistance, iterator: it} = params;
+}): { points: LatLng[]; distance: number } => {
+  const { targetDistance, iterator: it } = params;
 
   const points: LatLng[] = [];
 
@@ -67,11 +64,11 @@ const constructFragments = (params: {
   while (it.hasNext()) {
     const stepDistance = calculateDistance({
       from: it.get(),
-      to: it.get(1)
+      to: it.get(1),
     });
 
     // Check if the total distance exceeds the distance for this fragment
-    if (targetDistance === null || ((stepDistance + totalDistance) <= targetDistance)) {
+    if (targetDistance === null || stepDistance + totalDistance <= targetDistance) {
       // Distance not exceeded. Handle next point.
 
       // 1. Increase the distance
@@ -119,4 +116,4 @@ const constructFragments = (params: {
     points: points,
     distance: totalDistance,
   };
-}
+};

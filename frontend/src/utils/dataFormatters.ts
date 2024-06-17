@@ -1,17 +1,17 @@
-import {EntryType} from "../common/types";
-import {addLeadingZero} from "./date";
+import { EntryType } from '../common/types';
+import { addLeadingZero } from './date';
 
 export const formatEntryType = (type: EntryType): string => {
   switch (type) {
     case EntryType.WALK:
-      return "Gåtur";
+      return 'Gåtur';
     case EntryType.THREADMILL:
-      return "Mølle";
+      return 'Mølle';
     default:
     case EntryType.RUN:
-      return "Løpetur";
+      return 'Løpetur';
   }
-}
+};
 
 export const formatDistance = (value: number): string => {
   if (value < 1000) {
@@ -24,7 +24,7 @@ export const formatDistance = (value: number): string => {
   }
 
   return `${Number(value / 1000).toFixed(2)} km`;
-}
+};
 
 export const formatTime = (time: string): string => {
   const split = time.split(':');
@@ -35,15 +35,15 @@ export const formatTime = (time: string): string => {
   }
 
   // Hide hour if we run under an hour
-  if (split[0] === "00") {
+  if (split[0] === '00') {
     return `${split[1]}:${split[2]}`;
   }
 
   // Ran for more than an hour (can't be right?)
   return `${split[0]}:${split[1]}:${split[2]}`;
-}
+};
 
-export const formatSplit = (params: { time: string; distance: number}): string => {
+export const formatSplit = (params: { time: string; distance: number }): string => {
   // This is probably a pretty stupid way to calculate this...
   const { time, distance } = params;
   const totalSeconds = getTotalSeconds(time);
@@ -51,10 +51,10 @@ export const formatSplit = (params: { time: string; distance: number}): string =
   const secondsPerKilometer = secondsPerMeter * 1000;
 
   const minutes = Math.floor(secondsPerKilometer / 60);
-  const seconds = secondsPerKilometer - (minutes * 60);
+  const seconds = secondsPerKilometer - minutes * 60;
 
   return `${addLeadingZero(minutes)}:${addLeadingZero(Math.round(seconds))}`;
-}
+};
 
 const getTotalSeconds = (time: string): number => {
   const split = time.split(':');
@@ -64,5 +64,5 @@ const getTotalSeconds = (time: string): number => {
     return 0;
   }
 
-  return (parseInt(split[0]) * (60 * 60)) + (parseInt(split[1]) * 60) + parseInt(split[2]);
-}
+  return parseInt(split[0]) * (60 * 60) + parseInt(split[1]) * 60 + parseInt(split[2]);
+};

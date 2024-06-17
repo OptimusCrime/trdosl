@@ -1,14 +1,15 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { api } from '../endpoints';
-import {BackendEndpoints} from "../endpoints/backendEndpoints.types";
-import {queryKeys} from "./queryKeys";
+import { BackendEndpoints } from '../endpoints/backendEndpoints.types';
+import { queryKeys } from './queryKeys';
 
-export const useEntries = () =>  useQuery({
-  queryKey: queryKeys.entries,
-  queryFn: api.getEntries,
-  staleTime: Infinity,
-});
+export const useEntries = () =>
+  useQuery({
+    queryKey: queryKeys.entries,
+    queryFn: api.getEntries,
+    staleTime: Infinity,
+  });
 
 export const usePostEntry = () =>
   useMutation({

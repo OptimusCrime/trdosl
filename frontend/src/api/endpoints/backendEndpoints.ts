@@ -1,10 +1,10 @@
-import ky, {HTTPError} from 'ky';
+import ky, { HTTPError } from 'ky';
 
-import {deleteCookie} from '../../auth';
-import {URLS} from "../../utils/urls";
-import {addAuthHeaders} from '../addAuthHeaders';
-import {HttpStatus} from '../httpStatus';
-import {BackendEndpoints} from './backendEndpoints.types';
+import { deleteCookie } from '../../auth';
+import { URLS } from '../../utils/urls';
+import { addAuthHeaders } from '../addAuthHeaders';
+import { HttpStatus } from '../httpStatus';
+import { BackendEndpoints } from './backendEndpoints.types';
 
 // Why did I over-engineer this soo much
 interface WhitelistItem {
@@ -62,12 +62,10 @@ export const postEntry = (params: BackendEndpoints.Entries.POST.Payload) =>
   api
     .post('v1/entry', {
       json: params,
-    }).then(() => Promise.resolve());
+    })
+    .then(() => Promise.resolve());
 
-export const deleteEntry = (id: number) =>
-  api
-    .delete(`v1/entry/${id}`, {
-    }).then(() => Promise.resolve());
+export const deleteEntry = (id: number) => api.delete(`v1/entry/${id}`, {}).then(() => Promise.resolve());
 
 ///////////////////////////////////////////////////////////////////////
 // Auth

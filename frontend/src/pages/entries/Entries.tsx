@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 
-import {useDeleteEntry, useEntries} from "../../api/queries/entries";
-import data from "../../data/data.json";
-import {ErrorIcon} from "../../icons";
-import {buildFragments} from "../../lineBuilder";
-import {useAppDispatch} from "../../store/hooks";
-import {setDistances} from "../../store/reducers/globalReducer";
-import {formatDistance, formatSplit, formatTime} from "../../utils/dataFormatters";
-import {URLS} from "../../utils/urls";
+import { useDeleteEntry, useEntries } from '../../api/queries/entries';
+import data from '../../data/data.json';
+import { ErrorIcon } from '../../icons';
+import { buildFragments } from '../../lineBuilder';
+import { useAppDispatch } from '../../store/hooks';
+import { setDistances } from '../../store/reducers/globalReducer';
+import { formatDistance, formatSplit, formatTime } from '../../utils/dataFormatters';
+import { URLS } from '../../utils/urls';
 
 export const Entries = () => {
   const dispatch = useAppDispatch();
@@ -19,9 +19,9 @@ export const Entries = () => {
       onSuccess: () => {
         // Lol (I am lazy)
         window.location.replace(URLS.ENTRIES);
-      }
+      },
     });
-  }
+  };
 
   useEffect(() => {
     if (!entries.isSuccess) {
@@ -33,7 +33,6 @@ export const Entries = () => {
       entries: entries.data,
       points: data,
     });
-
 
     // Calculate the progress (this will be displayed in the header)
     let completedDistance = 0;
@@ -47,10 +46,12 @@ export const Entries = () => {
     }
 
     // Set the progress
-    dispatch(setDistances({
-      remaining: remainingDistance,
-      completed: completedDistance
-    }));
+    dispatch(
+      setDistances({
+        remaining: remainingDistance,
+        completed: completedDistance,
+      }),
+    );
   }, [entries]);
 
   if (entries.isLoading) {
@@ -70,7 +71,7 @@ export const Entries = () => {
         <div className="flex self-center w-full max-w-2xl pt-4 px-4">
           <div role="alert" className="alert alert-error">
             <div>
-              <ErrorIcon/>
+              <ErrorIcon />
             </div>
             <div className="flex flex-col space-y-2">
               <span>Kunne ikke laste innleggene dine</span>
@@ -92,32 +93,39 @@ export const Entries = () => {
             <div className="card-body flex">
               <h4 className="text-3xl pb-2">Innlegg</h4>
               <div className="flex flex-col">
-                {sortedEntries.map(entry => (
+                {sortedEntries.map((entry) => (
                   <div className="p-4 rounded-lg border-2 border-base-100 mb-4 flex flex-col" key={entry.id}>
                     <div className="space-y-2">
                       <p>Distanse: {formatDistance(entry.runDistance)}</p>
                       <p>Tid: {formatTime(entry.runTime)}</p>
-                      <p>Split: {formatSplit({distance: entry.runDistance, time: entry.runTime})}</p>
+                      <p>Split: {formatSplit({ distance: entry.runDistance, time: entry.runTime })}</p>
                       <div className="py-2">
                         <p>Kommentar:</p>
                         <div className="flex flex-col space-y-2 py-2 px-2 border-[1px] rounded mt-2">
-                          {entry.comment === null
-                            ? (<p><i>Ingen kommentar</i></p>)
-                            : entry.comment
+                          {entry.comment === null ? (
+                            <p>
+                              <i>Ingen kommentar</i>
+                            </p>
+                          ) : (
+                            entry.comment
                               .split(/\r?\n/)
-                              .filter(line => line.length > 0)
+                              .filter((line) => line.length > 0)
                               .map((line, idx) => <p key={idx}>{line}</p>)
-                          }
+                          )}
                         </div>
                       </div>
                     </div>
                     <div className="flex flex-row justify-end mt-2">
-                      <button className="btn btn-primary" disabled={deleteEntry.isLoading} onClick={() => deleteCallback(entry.id)}>
+                      <button
+                        className="btn btn-primary"
+                        disabled={deleteEntry.isLoading}
+                        onClick={() => deleteCallback(entry.id)}
+                      >
                         {deleteEntry.isLoading ? <span className="loading loading-spinner"></span> : 'Slett'}
                       </button>
                     </div>
                   </div>
-                  ))}
+                ))}
               </div>
             </div>
           </div>
@@ -125,4 +133,4 @@ export const Entries = () => {
       </div>
     </div>
   );
-}
+};

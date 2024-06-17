@@ -1,4 +1,4 @@
-import {LatLng} from "../common/types";
+import { LatLng } from '../common/types';
 
 export class LatLngIterator {
   private data: LatLng[];
@@ -20,11 +20,7 @@ export class LatLngIterator {
   }
 
   insert(item: LatLng) {
-    this.data = [
-      ...this.data.slice(0, this.index + 1),
-      item,
-      ...this.data.slice(this.index + 1),
-    ];
+    this.data = [...this.data.slice(0, this.index + 1), item, ...this.data.slice(this.index + 1)];
   }
 
   get(steps?: number) {

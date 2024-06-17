@@ -1,12 +1,12 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 
-import {deleteCookie, getCookie} from "../auth";
-import {ADD_MODAL_ID, LOGIN_MODAL_ID} from "../components";
-import {useAppSelector} from "../store/hooks";
-import {ReducerNames} from "../store/reducers/reducerNames";
+import { deleteCookie, getCookie } from '../auth';
+import { ADD_MODAL_ID, LOGIN_MODAL_ID } from '../components';
+import { useAppSelector } from '../store/hooks';
+import { ReducerNames } from '../store/reducers/reducerNames';
 import { formatDistance } from '../utils/dataFormatters';
-import {showModal} from "../utils/modal";
+import { showModal } from '../utils/modal';
 import { URLS } from '../utils/urls';
 import { Menu } from './Menu';
 
@@ -16,7 +16,7 @@ export const Header = () => {
   const history = useHistory();
   const location = useLocation();
   const path = location.pathname;
-  const signedIn = getCookie() !== "";
+  const signedIn = getCookie() !== '';
 
   return (
     <div className="navbar p-0">
@@ -124,7 +124,7 @@ export const Header = () => {
           </>
         )}
       </div>
-      <Menu/>
+      <Menu />
     </div>
   );
 };

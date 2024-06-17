@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import {Entry, EntryType} from "../../common/types";
+import { Entry, EntryType } from '../../common/types';
 
 export namespace BackendEndpoints {
   export namespace Entries {
@@ -21,7 +21,7 @@ export namespace BackendEndpoints {
     export interface POST {
       data: {
         token: string;
-      }
+      };
     }
   }
 }
