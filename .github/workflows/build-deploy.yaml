@@ -59,6 +59,9 @@ jobs:
       - name: Build application
         run: (cd backend && mvn clean package -DskipTests)
 
+      - name: Move build
+        run: (mkdir target && mv backend/target/*.jar ./target)
+
       - name: Build and publish Spring Boot to Registry
         uses: elgohr/Publish-Docker-Github-Action@v5
         env:
