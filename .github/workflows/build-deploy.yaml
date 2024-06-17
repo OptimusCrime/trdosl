@@ -49,12 +49,14 @@ jobs:
           dockerfile: docker_nginx.Dockerfile
           tags: "latest,${{ env.RELEASE_VERSION }}"
 
-      - name: Build application
+      - name: Setup Java
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
           cache: 'maven'
+
+      - name: Build application
         run: mvn clean package -DskipTests
 
       - name: Build and publish Spring Boot to Registry
