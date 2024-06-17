@@ -4,6 +4,7 @@ import {Route, Switch} from 'react-router-dom';
 import {Map} from '../pages';
 import {URLS} from '../utils/urls';
 import {Header} from './Header';
+import {LoginModal} from "../components/LogInModal";
 
 export const Wrapper = () => (
   <div className="container max-w-none">
@@ -12,6 +13,7 @@ export const Wrapper = () => (
         <Header/>
       </div>
     </div>
+    <LoginModal/>
     <Switch>
       <Route exact path={URLS.MAP}>
         <Map/>

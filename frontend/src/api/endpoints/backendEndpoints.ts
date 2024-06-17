@@ -1,9 +1,10 @@
-import ky, { HTTPError } from 'ky';
+import ky, {HTTPError} from 'ky';
 
-import { deleteCookie } from '../../auth';
-import { addAuthHeaders } from '../addAuthHeaders';
-import { HttpStatus } from '../httpStatus';
-import { BackendEndpoints } from './backendEndpoints.types';
+import {deleteCookie} from '../../auth';
+import {URLS} from "../../utils/urls";
+import {addAuthHeaders} from '../addAuthHeaders';
+import {HttpStatus} from '../httpStatus';
+import {BackendEndpoints} from './backendEndpoints.types';
 
 // Why did I over-engineer this soo much
 interface WhitelistItem {
@@ -13,16 +14,8 @@ interface WhitelistItem {
 
 const WHITELISTED_AUTH_ERROR_ITEMS: WhitelistItem[] = [
   {
-    method: 'GET',
-    regex: /v1\/accounts$/,
-  },
-  {
     method: 'POST',
-    regex: /v1\/account\/[0-9]+$/,
-  },
-  {
-    method: 'GET',
-    regex: /v1\/user\/init$/,
+    regex: /v1\/auth$/,
   },
 ];
 
@@ -44,8 +37,8 @@ const api = ky.create({
 
           deleteCookie();
 
-          // Because why the fuck not
-          // window.location.replace(URLS.LOGIN);
+          // Lol
+          window.location.replace(URLS.MAP);
         }
 
         return error;
@@ -63,4 +56,18 @@ export const getEntries = () =>
   api
     .get('v1/entries')
     .json<BackendEndpoints.Entries.GET>()
+    .then((res) => res.data);
+
+///////////////////////////////////////////////////////////////////////
+// Auth
+///////////////////////////////////////////////////////////////////////
+
+export const postAuth = (params: { password: string }) =>
+  api
+    .post('v1/auth', {
+      headers: {
+        'x-trdosl-password': params.password,
+      },
+    })
+    .json<BackendEndpoints.Auth.POST>()
     .then((res) => res.data);

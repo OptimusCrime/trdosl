@@ -1,12 +1,16 @@
 import React from 'react';
 import {useHistory, useLocation} from 'react-router';
 
+import {deleteCookie, getCookie} from "../auth";
 import {URLS} from '../utils/urls';
+import {showModal} from "../utils/modal";
+import {LOGIN_MODAL_ID} from "../components/LogInModal";
 
 export const Menu = () => {
   const history = useHistory();
   const location = useLocation();
   const path = location.pathname;
+  const signedIn = getCookie() !== "";
 
   return (
     <div className="navbar-end hidden lg:flex">
@@ -37,6 +41,50 @@ export const Menu = () => {
             Innlegg
           </a>
         </li>
+        {signedIn ? (
+          <>
+            <li>
+              <a
+                href="#"
+                className="normal-case text-sm"
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  // Lorem ipsum
+                }}
+              >
+                Legg til
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="normal-case text-sm"
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  deleteCookie();
+                  window.location.replace(URLS.MAP);
+                }}
+              >
+                Logg ut
+              </a>
+            </li>
+          </>
+        ) : (
+          <li>
+            <a
+              href="#"
+              className="normal-case text-sm"
+              onClick={(e) => {
+                e.preventDefault();
+                showModal(LOGIN_MODAL_ID);
+              }}
+            >
+              Logg inn
+            </a>
+          </li>
+        )}
       </ul>
     </div>
   );

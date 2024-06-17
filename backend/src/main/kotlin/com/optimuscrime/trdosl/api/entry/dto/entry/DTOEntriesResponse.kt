@@ -1,4 +1,4 @@
-package com.optimuscrime.trdosl.api.entry.dto.tournament
+package com.optimuscrime.trdosl.api.entry.dto.entry
 
 import com.optimuscrime.trdosl.services.db.domain.Entry
 

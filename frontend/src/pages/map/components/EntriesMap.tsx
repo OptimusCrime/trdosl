@@ -43,7 +43,13 @@ export const EntriesMap = (props: EntriesMapProps) => {
       });
 
       if (fragment.currentPosition) {
-        currentPosition = fragment.points[fragment.points.length - 1];
+        if (fragment.entry === null) {
+          // If we're starting, then we should use the very first point, and not the last
+          currentPosition = fragment.points[0];
+        }
+        else {
+          currentPosition = fragment.points[fragment.points.length - 1];
+        }
       }
 
       if (fragment.entry) {

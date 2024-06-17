@@ -7,4 +7,12 @@ export namespace BackendEndpoints {
       data: Entry[];
     }
   }
+
+  export namespace Auth {
+    export interface POST {
+      data: {
+        token: string;
+      }
+    }
+  }
 }

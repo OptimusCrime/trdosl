@@ -1,4 +1,4 @@
-const COOKIE_NAME = 'auto_squash_token';
+const COOKIE_NAME = 'trdosl_token';
 const COOKIE_LIFETIME_DAYS = 90;
 const COOKIE_PREFIX = `${COOKIE_NAME}=`;
 

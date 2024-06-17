@@ -3,11 +3,15 @@ import { useHistory, useLocation } from 'react-router';
 
 import { URLS } from '../utils/urls';
 import { Menu } from './Menu';
+import {deleteCookie, getCookie} from "../auth";
+import {showModal} from "../utils/modal";
+import {LOGIN_MODAL_ID} from "../components/LogInModal";
 
 export const Header = () => {
   const history = useHistory();
   const location = useLocation();
   const path = location.pathname;
+  const signedIn = getCookie() !== "";
 
   return (
     <div className="navbar p-0">
@@ -24,7 +28,7 @@ export const Header = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
             </svg>
           </label>
-          <ul tabIndex={0} className="menu dropdown-content p-2 bg-base-100 rounded-box">
+          <ul tabIndex={0} className="menu dropdown-content p-2 bg-base-100 rounded-box w-64">
             <li>
               <a
                 href={URLS.MAP}
@@ -51,6 +55,50 @@ export const Header = () => {
                 Innlegg
               </a>
             </li>
+            {signedIn ? (
+              <>
+                <li>
+                  <a
+                    href="#"
+                    className="normal-case text-sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+
+                      // Lorem ipsum dolor sit
+                    }}
+                  >
+                    Legg til
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="normal-case text-sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+
+                      deleteCookie();
+                      window.location.replace(URLS.MAP);
+                    }}
+                  >
+                    Logg ut
+                  </a>
+                </li>
+              </>
+            ) : (
+              <li>
+                <a
+                  href="#"
+                  className="normal-case text-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    showModal(LOGIN_MODAL_ID);
+                  }}
+                >
+                  Logg inn
+                </a>
+              </li>
+            )}
           </ul>
         </div>
         <a
