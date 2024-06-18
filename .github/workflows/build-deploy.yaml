@@ -30,8 +30,10 @@ jobs:
           cd frontend && npm ci
 
       - name: Build
+        with:
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
         run: |
-          cd frontend && npm run build:prod
+          (cd frontend && echo $MAPS_API_KEY > .env && npm run build:prod)
 
       ##############################################################
       # Build and push docker images
