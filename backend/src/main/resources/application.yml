@@ -4,6 +4,12 @@ logging:
 
 server:
   port: ${PORT:8080}
+  tomcat:
+    threads:
+      max: 4
+      min-spare: 1
+    max-connections: 3
+    accept-count: 3
 
 spring:
   application:
