@@ -24,6 +24,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: frontend/.nvmrc  # Use the same version as configured for the project
+        env:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
 
       - name: Install
