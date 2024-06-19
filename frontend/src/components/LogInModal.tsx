@@ -38,7 +38,6 @@ export const LoginModal = () => {
           </label>
           <input
             type="password"
-            autoFocus={true}
             className="input input-bordered w-full"
             onChange={(e) => setPassword(e.target.value)}
             onKeyUp={(e) => {
