@@ -118,7 +118,7 @@ export const Header = () => {
         </a>
       </div>
       <div className="text-center lg:w-[400px]">
-        {distanceRemaining && distanceCompleted && (
+        {distanceRemaining !== null && distanceCompleted !== null && (
           <>
             {formatDistance(distanceCompleted)} / {formatDistance(distanceRemaining)}
           </>
