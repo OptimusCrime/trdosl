@@ -6,6 +6,11 @@ import data from '../../../data/data.json';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setEntryModal } from '../../../store/reducers/globalReducer';
 import { ReducerNames } from '../../../store/reducers/reducerNames';
+import {formatEntryType} from "../../../utils/dataFormatters";
+import {formatDate} from "../../../utils/date";
+import {ENTRY_MODAL_CURRENT_POSITION_ID} from "./EntryModal";
+
+const MARKERS_BASE_URL = 'https://trdosl.optimuscrime.net/static/markers/';
 
 export const EntriesMap = () => {
   const { entries, fragments, currentPosition } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
@@ -20,23 +25,23 @@ export const EntriesMap = () => {
     }
 
     const meIcon: google.maps.Icon = {
-      url: 'https://trdosl.optimuscrime.net/static/markers/me.png',
-      scaledSize: new coreLib.Size(40, 51),
+      url: `${MARKERS_BASE_URL}/me.png`,
+      scaledSize: new coreLib.Size(50, 64),
     };
 
     const runningIcon: google.maps.Icon = {
-      url: 'https://trdosl.optimuscrime.net/static/markers/running.png',
-      scaledSize: new coreLib.Size(40, 51),
+      url: `${MARKERS_BASE_URL}/running.png`,
+      scaledSize: new coreLib.Size(50, 64),
     };
 
     const treadmillIcon: google.maps.Icon = {
-      url: 'https://trdosl.optimuscrime.net/static/markers/treadmill.png',
-      scaledSize: new coreLib.Size(40, 51),
+      url: `${MARKERS_BASE_URL}/treadmill.png`,
+      scaledSize: new coreLib.Size(50, 64),
     };
 
     const walkingIcon: google.maps.Icon = {
-      url: 'https://trdosl.optimuscrime.net/static/markers/walking.png',
-      scaledSize: new coreLib.Size(40, 51),
+      url: `${MARKERS_BASE_URL}/walking.png`,
+      scaledSize: new coreLib.Size(50, 64),
     };
 
     const getIcon = (entry: Entry): google.maps.Icon => {
@@ -63,29 +68,36 @@ export const EntriesMap = () => {
       });
 
       if (fragment.entry) {
+        const { entry, points } = fragment;
+
         const marker = new google.maps.Marker({
-          position: fragment.points[0],
+          position: points[0],
           map: map,
-          icon: getIcon(fragment.entry),
+          icon: getIcon(entry),
+          title: `${formatEntryType(entry.type)} - ${formatDate(new Date(entry.runDate))}`
         });
 
         marker.addListener('click', () => {
-          if (fragment.entry === null) {
+          if (entry === null) {
             return;
           }
 
-          dispatch(setEntryModal(fragment.entry.id));
+          dispatch(setEntryModal(entry.id));
         });
       }
 
       path.setMap(map);
     }
 
-    new google.maps.Marker({
+    const currentPositionMarker = new google.maps.Marker({
       position: currentPosition,
-      title: 'Current position',
+      title: 'Nåværende posisjon',
       map: map,
       icon: meIcon,
+    });
+
+    currentPositionMarker.addListener('click', () => {
+      dispatch(setEntryModal(ENTRY_MODAL_CURRENT_POSITION_ID));
     });
 
     // Set the default position to where we currently are on the road

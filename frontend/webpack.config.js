@@ -58,6 +58,10 @@ module.exports = () => {
           appName: 'TRD-OSL',
           start_url: '/',
           appDescription: 'TRD-OSL',
+          background: '#ff6e6e',
+          theme_color: '#ff6e6e',
+          developerName: 'OptimusCrime',
+          developerURL: null,
         },
       }),
       new HtmlWebpackPlugin({

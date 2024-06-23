@@ -8,6 +8,7 @@ import { deleteCookie } from '../auth';
 import { LOGIN_MODAL_ID } from '../components';
 import { showModal } from '../utils/modal';
 import { URLS } from '../utils/urls';
+import {closeMenu} from "./closeMenu";
 
 export const Menu = () => {
   const queryClient = useQueryClient();
@@ -28,6 +29,7 @@ export const Menu = () => {
               e.preventDefault();
 
               history.push(URLS.MAP);
+              closeMenu();
             }}
           >
             Kart
@@ -41,6 +43,7 @@ export const Menu = () => {
               e.preventDefault();
 
               history.push(URLS.ENTRIES);
+              closeMenu();
             }}
           >
             Innlegg
@@ -56,6 +59,7 @@ export const Menu = () => {
                   e.preventDefault();
 
                   history.push(URLS.ADD_ENTRY);
+                  closeMenu();
                 }}
               >
                 Legg til
@@ -73,6 +77,7 @@ export const Menu = () => {
                   await queryClient.invalidateQueries({
                     queryKey: queryKeys.auth,
                   });
+                  closeMenu();
                 }}
               >
                 Logg ut
@@ -88,6 +93,7 @@ export const Menu = () => {
               onClick={(e) => {
                 e.preventDefault();
                 showModal(LOGIN_MODAL_ID);
+                closeMenu();
               }}
             >
               Logg inn

@@ -12,6 +12,7 @@ import { formatDistance } from '../utils/dataFormatters';
 import { showModal } from '../utils/modal';
 import { URLS } from '../utils/urls';
 import { Menu } from './Menu';
+import {closeMenu} from "./closeMenu";
 
 export const Header = () => {
   const { distanceRemaining, distanceCompleted } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
@@ -47,6 +48,7 @@ export const Header = () => {
                   e.preventDefault();
 
                   history.push(URLS.MAP);
+                  closeMenu();
                 }}
               >
                 Kart
@@ -60,6 +62,7 @@ export const Header = () => {
                   e.preventDefault();
 
                   history.push(URLS.ENTRIES);
+                  closeMenu();
                 }}
               >
                 Innlegg
@@ -75,6 +78,7 @@ export const Header = () => {
                       e.preventDefault();
 
                       history.push(URLS.ADD_ENTRY);
+                      closeMenu();
                     }}
                   >
                     Legg til
@@ -92,6 +96,7 @@ export const Header = () => {
                       await queryClient.invalidateQueries({
                         queryKey: queryKeys.auth,
                       });
+                      closeMenu();
                     }}
                   >
                     Logg ut
@@ -107,6 +112,7 @@ export const Header = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     showModal(LOGIN_MODAL_ID);
+                    closeMenu();
                   }}
                 >
                   Logg inn
@@ -122,6 +128,7 @@ export const Header = () => {
             e.preventDefault();
 
             history.push(URLS.MAP);
+            closeMenu();
           }}
         >
           TRD-OSL
