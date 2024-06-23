@@ -1,15 +1,15 @@
-import {useQueryClient} from '@tanstack/react-query';
-import React, {useState} from 'react';
-import {useHistory} from 'react-router';
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 
-import {usePostEntry} from '../../api/queries/entries';
-import {queryKeys} from '../../api/queries/queryKeys';
-import {EntryType} from '../../common/types';
-import {CheckIcon, ErrorIcon, XIcon} from '../../icons';
-import {formatEntryType} from '../../utils/dataFormatters';
-import {addLeadingZero} from '../../utils/date';
-import {URLS} from '../../utils/urls';
-import {AddEntryWrapper} from './components';
+import { usePostEntry } from '../../api/queries/entries';
+import { queryKeys } from '../../api/queries/queryKeys';
+import { EntryType } from '../../common/types';
+import { CheckIcon, XIcon } from '../../icons';
+import { formatEntryType } from '../../utils/dataFormatters';
+import { addLeadingZero } from '../../utils/date';
+import { URLS } from '../../utils/urls';
+import { AddEntryWrapper } from './components';
 
 const DEFAULT_TYPE = EntryType.RUN;
 
@@ -65,7 +65,7 @@ export const AddEntry = () => {
           <div className="flex self-center w-full pt-4 px-4">
             <div role="alert" className="alert alert-success">
               <div>
-                <CheckIcon/>
+                <CheckIcon />
               </div>
               <div className="flex flex-col space-y-2">
                 <span>Innlegget er lagret.</span>
@@ -176,10 +176,7 @@ export const AddEntry = () => {
           <div className="label">
             <span className="label-text">Kommentar</span>
           </div>
-          <textarea
-            className="textarea textarea-bordered h-24"
-            onChange={(e) => setComment(e.target.value)}
-          />
+          <textarea className="textarea textarea-bordered h-24" onChange={(e) => setComment(e.target.value)} />
         </label>
         <div className="w-full flex justify-end">
           <button className="btn btn-primary" disabled={postEntry.isLoading} onClick={addCallback}>
@@ -188,7 +185,7 @@ export const AddEntry = () => {
         </div>
         {postEntry.isError && (
           <div role="alert" className="alert alert-error">
-            <XIcon/>
+            <XIcon />
             <span>Kunne ikke legge til innlegg.</span>
           </div>
         )}

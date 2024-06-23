@@ -6,9 +6,9 @@ import data from '../../../data/data.json';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setEntryModal } from '../../../store/reducers/globalReducer';
 import { ReducerNames } from '../../../store/reducers/reducerNames';
-import {formatEntryType} from "../../../utils/dataFormatters";
-import {formatDate} from "../../../utils/date";
-import {ENTRY_MODAL_CURRENT_POSITION_ID} from "./EntryModal";
+import { formatEntryType } from '../../../utils/dataFormatters';
+import { formatDate } from '../../../utils/date';
+import { ENTRY_MODAL_CURRENT_POSITION_ID } from './EntryModal';
 
 const MARKERS_BASE_URL = 'https://trdosl.optimuscrime.net/static/markers/';
 
@@ -74,7 +74,7 @@ export const EntriesMap = () => {
           position: points[0],
           map: map,
           icon: getIcon(entry),
-          title: `${formatEntryType(entry.type)} - ${formatDate(new Date(entry.runDate))}`
+          title: `${formatEntryType(entry.type)} - ${formatDate(new Date(entry.runDate))}`,
         });
 
         marker.addListener('click', () => {

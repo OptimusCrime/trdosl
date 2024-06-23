@@ -11,8 +11,8 @@ import { ReducerNames } from '../store/reducers/reducerNames';
 import { formatDistance } from '../utils/dataFormatters';
 import { showModal } from '../utils/modal';
 import { URLS } from '../utils/urls';
+import { closeMenu } from './closeMenu';
 import { Menu } from './Menu';
-import {closeMenu} from "./closeMenu";
 
 export const Header = () => {
   const { distanceRemaining, distanceCompleted } = useAppSelector((state) => state[ReducerNames.GLOBAL]);

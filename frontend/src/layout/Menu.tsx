@@ -8,7 +8,7 @@ import { deleteCookie } from '../auth';
 import { LOGIN_MODAL_ID } from '../components';
 import { showModal } from '../utils/modal';
 import { URLS } from '../utils/urls';
-import {closeMenu} from "./closeMenu";
+import { closeMenu } from './closeMenu';
 
 export const Menu = () => {
   const queryClient = useQueryClient();

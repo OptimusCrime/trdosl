@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface AddEntryWrapperProps {
   children: React.ReactNode;
@@ -14,13 +14,11 @@ export const AddEntryWrapper = (props: AddEntryWrapperProps) => {
           <div className="mx-4 card bg-neutral text-neutral-content card-compact w-full">
             <div className="card-body flex">
               <h4 className="text-3xl pb-2">Legg til</h4>
-              <div className="flex flex-col">
-                {children}
-              </div>
+              <div className="flex flex-col">{children}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
