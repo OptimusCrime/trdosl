@@ -64,7 +64,7 @@ export const EntryModal = () => {
         </div>
       </Modal>
     );
-  } // {formatDistance(distanceCompleted)} / {formatDistance(distanceRemaining)}
+  }
 
   const entry = entries.find((entry) => entry.id === entryModal);
   if (!entry) {
