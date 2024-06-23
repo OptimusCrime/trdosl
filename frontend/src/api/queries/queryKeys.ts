@@ -6,8 +6,10 @@ type QueryKeys = {
 };
 
 // Base keys
+const AUTH = 'auth' as const;
 const ENTRIES = 'entries' as const;
 
 export const queryKeys = {
+  auth: [AUTH],
   entries: [ENTRIES],
 } as const satisfies QueryKeys;

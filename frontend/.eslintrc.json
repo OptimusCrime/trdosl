@@ -6,6 +6,11 @@
     "plugin:react/recommended",
     "prettier"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "plugins": ["react", "@typescript-eslint", "simple-import-sort", "unused-imports"],
   "rules": {
     "@typescript-eslint/no-explicit-any": "error",

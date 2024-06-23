@@ -5,7 +5,7 @@ export const formatEntryType = (type: EntryType): string => {
   switch (type) {
     case EntryType.WALK:
       return 'Gåtur';
-    case EntryType.THREADMILL:
+    case EntryType.TREADMILL:
       return 'Mølle';
     default:
     case EntryType.RUN:
@@ -29,8 +29,8 @@ export const formatDistance = (value: number): string => {
 export const formatTime = (time: string): string => {
   const split = time.split(':');
 
-  // This should never happen
   if (split.length !== 3) {
+    // This should theoretically never happen
     return time;
   }
 
@@ -39,7 +39,7 @@ export const formatTime = (time: string): string => {
     return `${split[1]}:${split[2]}`;
   }
 
-  // Ran for more than an hour (can't be right?)
+  // Ran for more than an hour
   return `${split[0]}:${split[1]}:${split[2]}`;
 };
 
@@ -59,8 +59,8 @@ export const formatSplit = (params: { time: string; distance: number }): string 
 const getTotalSeconds = (time: string): number => {
   const split = time.split(':');
 
-  // What in the
   if (split.length !== 3) {
+    // This should theoretically never happen
     return 0;
   }
 

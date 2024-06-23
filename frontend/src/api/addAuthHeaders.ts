@@ -6,15 +6,7 @@ const DO_NOT_ADD_HEADER_URLS = ['/v1/entries', '/v1/auth'];
 
 export const addAuthHeaders: BeforeRequestHook = async (request) => {
   for (const url of DO_NOT_ADD_HEADER_URLS) {
-    if (typeof url === 'string') {
-      if (request.url.endsWith(url)) {
-        return;
-      }
-
-      continue;
-    }
-
-    if (request.url.match(url)) {
+    if (request.url.endsWith(url)) {
       return;
     }
   }

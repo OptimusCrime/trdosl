@@ -1,36 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { Entry } from '../../../common/types';
 import { Modal } from '../../../components';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setEntryModal } from '../../../store/reducers/globalReducer';
 import { ReducerNames } from '../../../store/reducers/reducerNames';
 import { formatDistance, formatEntryType, formatSplit, formatTime } from '../../../utils/dataFormatters';
 import { formatDate } from '../../../utils/date';
-import { hideModal } from '../../../utils/modal';
+import { hideModal, showModal } from '../../../utils/modal';
 
-export const ENTRY_MODAL_ID = 'entry_modal_id';
+const ENTRY_MODAL_ID = 'entry_modal_id';
 
-interface EntryModalProps {
-  entries: Entry[];
-}
-
-export const EntryModal = (props: EntryModalProps) => {
-  const { entries } = props;
-
-  return (
-    <Modal id={ENTRY_MODAL_ID}>
-      <EntryModalInner entries={entries} />
-    </Modal>
-  );
-};
-
-const EntryModalInner = (props: EntryModalProps) => {
-  const { entries } = props;
+export const EntryModal = () => {
+  const { entries, entryModal } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
 
   const dispatch = useAppDispatch();
 
-  const { entryModal } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
+  useEffect(() => {
+    // Weird hack...
+    if (entryModal) {
+      showModal(ENTRY_MODAL_ID);
+    }
+  }, [entryModal]);
 
   if (entryModal === null) {
     return;
@@ -42,7 +32,7 @@ const EntryModalInner = (props: EntryModalProps) => {
   }
 
   return (
-    <div>
+    <Modal id={ENTRY_MODAL_ID}>
       <h3 className="font-bold text-lg">
         {formatEntryType(entry.type)} - {formatDate(new Date(entry.runDate))}
       </h3>
@@ -51,21 +41,19 @@ const EntryModalInner = (props: EntryModalProps) => {
           <p>Distanse: {formatDistance(entry.runDistance)}</p>
           <p>Tid: {formatTime(entry.runTime)}</p>
           <p>Split: {formatSplit({ distance: entry.runDistance, time: entry.runTime })}</p>
-          <div className="py-2">
-            <p>Kommentar:</p>
-            <div className="flex flex-col space-y-2 py-2 px-2 border-[1px] rounded mt-2">
-              {entry.comment === null ? (
-                <p>
-                  <i>Ingen kommentar</i>
-                </p>
-              ) : (
-                entry.comment
+          {entry.comment !== null && (
+            <div className="py-2">
+              <p>Kommentar:</p>
+              <div className="flex flex-col space-y-2 py-2 px-2 border-[1px] rounded mt-2">
+                {entry.comment
                   .split(/\r?\n/)
                   .filter((line) => line.length > 0)
-                  .map((line, idx) => <p key={idx}>{line}</p>)
-              )}
+                  .map((line, idx) => (
+                    <p key={idx}>{line}</p>
+                  ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="flex flex-row mt-4 justify-end">
           <button
@@ -79,6 +67,6 @@ const EntryModalInner = (props: EntryModalProps) => {
           </button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };

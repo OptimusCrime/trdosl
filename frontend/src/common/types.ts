@@ -11,7 +11,7 @@ export interface Entry {
 export enum EntryType {
   RUN = 'RUN',
   WALK = 'WALK',
-  THREADMILL = 'THREADMILL',
+  TREADMILL = 'TREADMILL',
 }
 
 export interface LatLng {

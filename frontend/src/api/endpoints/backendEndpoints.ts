@@ -1,21 +1,19 @@
 import ky, { HTTPError } from 'ky';
 
 import { deleteCookie } from '../../auth';
-import { URLS } from '../../utils/urls';
 import { addAuthHeaders } from '../addAuthHeaders';
 import { HttpStatus } from '../httpStatus';
 import { BackendEndpoints } from './backendEndpoints.types';
 
-// Why did I over-engineer this soo much
 interface WhitelistItem {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
-  regex: RegExp;
+  path: string;
 }
 
 const WHITELISTED_AUTH_ERROR_ITEMS: WhitelistItem[] = [
   {
     method: 'POST',
-    regex: /v1\/auth$/,
+    path: '/v1/auth',
   },
 ];
 
@@ -27,18 +25,12 @@ const api = ky.create({
       async (error: HTTPError) => {
         if (error.response.status === HttpStatus.Forbidden) {
           for (const item of WHITELISTED_AUTH_ERROR_ITEMS) {
-            if (
-              error.request.method.toUpperCase() === item.method.toUpperCase() &&
-              error.request.url.match(item.regex)
-            ) {
+            if (error.request.method.toUpperCase() === item.method.toUpperCase() && error.request.url === item.path) {
               return error;
             }
           }
 
           deleteCookie();
-
-          // Lol
-          window.location.replace(URLS.MAP);
         }
 
         return error;

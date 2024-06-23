@@ -1,0 +1,1 @@
+ALTER TYPE ENTRY_TYPE RENAME VALUE 'threadmill' TO 'treadmill';

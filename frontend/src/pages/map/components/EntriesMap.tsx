@@ -1,28 +1,15 @@
 import { Map, useMap } from '@vis.gl/react-google-maps';
 import React, { useEffect } from 'react';
 
-import { Entry } from '../../../common/types';
 import data from '../../../data/data.json';
-import { buildFragments } from '../../../lineBuilder';
-import { useAppDispatch } from '../../../store/hooks';
-import { setDistances, setEntryModal } from '../../../store/reducers/globalReducer';
-import { showModal } from '../../../utils/modal';
-import { ENTRY_MODAL_ID } from './EntryModal';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { setEntryModal } from '../../../store/reducers/globalReducer';
+import { ReducerNames } from '../../../store/reducers/reducerNames';
 
-interface EntriesMapProps {
-  entries: Entry[];
-}
+export const EntriesMap = () => {
+  const { entries, fragments, currentPosition } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
 
-export const EntriesMap = (props: EntriesMapProps) => {
   const dispatch = useAppDispatch();
-
-  const { entries } = props;
-
-  const fragments = buildFragments({
-    entries: entries,
-    points: data,
-  });
-
   const map = useMap();
 
   useEffect(() => {
@@ -30,18 +17,7 @@ export const EntriesMap = (props: EntriesMapProps) => {
       return;
     }
 
-    // Calculate the progress (this will be displayed in the header)
-    let completedDistance = 0;
-    let remainingDistance = 0;
-
-    let currentPosition = fragments[0].points[0];
     for (const fragment of fragments) {
-      if (fragment.entry) {
-        completedDistance += fragment.distance;
-      } else {
-        remainingDistance = fragment.distance;
-      }
-
       const path = new google.maps.Polyline({
         path: fragment.points,
         geodesic: true,
@@ -52,19 +28,9 @@ export const EntriesMap = (props: EntriesMapProps) => {
         strokeWeight: 4,
       });
 
-      if (fragment.currentPosition) {
-        if (fragment.entry === null) {
-          // If we're starting, then we should use the very first point, and not the last
-          currentPosition = fragment.points[0];
-        } else {
-          currentPosition = fragment.points[fragment.points.length - 1];
-        }
-      }
-
       if (fragment.entry) {
         const marker = new google.maps.Marker({
           position: fragment.points[0],
-          title: 'Hello world',
           map: map,
         });
 
@@ -74,7 +40,6 @@ export const EntriesMap = (props: EntriesMapProps) => {
           }
 
           dispatch(setEntryModal(fragment.entry.id));
-          showModal(ENTRY_MODAL_ID);
         });
       }
 
@@ -88,18 +53,9 @@ export const EntriesMap = (props: EntriesMapProps) => {
     });
 
     // Set the default position to where we currently are on the road
-    map.setCenter({
-      lat: currentPosition.lat,
-      lng: currentPosition.lng,
-    });
-
-    // Set the progress
-    dispatch(
-      setDistances({
-        remaining: remainingDistance,
-        completed: completedDistance,
-      }),
-    );
+    if (currentPosition) {
+      map.setCenter(currentPosition);
+    }
   }, [map, entries]);
 
   return (

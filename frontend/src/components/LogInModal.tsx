@@ -1,28 +1,35 @@
+import { useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
-import { useAuth } from '../api/queries/auth';
+import { usePostAuth } from '../api/queries/auth';
+import { queryKeys } from '../api/queries/queryKeys';
 import { setCookie } from '../auth';
 import { XIcon } from '../icons';
-import { URLS } from '../utils/urls';
+import { hideModal } from '../utils/modal';
 import { Modal } from './Modal';
 
 export const LOGIN_MODAL_ID = 'login_modal_id';
 
 export const LoginModal = () => {
-  const auth = useAuth();
+  const queryClient = useQueryClient();
+  const postAuth = usePostAuth();
+
   const [password, setPassword] = useState<string>('');
 
   const authCallback = () => {
-    auth.mutate(
+    postAuth.mutate(
       {
         password: password,
       },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           setCookie(data.token);
 
-          // Lol (I am lazy)
-          window.location.replace(URLS.MAP);
+          await queryClient.invalidateQueries({
+            queryKey: queryKeys.auth,
+          });
+
+          hideModal(LOGIN_MODAL_ID);
         },
       },
     );
@@ -48,11 +55,11 @@ export const LoginModal = () => {
           />
         </div>
         <div className="w-full flex justify-end">
-          <button className="btn btn-primary" disabled={auth.isLoading} onClick={authCallback}>
-            {auth.isLoading ? <span className="loading loading-spinner"></span> : 'Logg inn'}
+          <button className="btn btn-primary" disabled={postAuth.isLoading} onClick={authCallback}>
+            {postAuth.isLoading ? <span className="loading loading-spinner"></span> : 'Logg inn'}
           </button>
         </div>
-        {auth.isError && (
+        {postAuth.isError && (
           <div role="alert" className="alert alert-error">
             <XIcon />
             <span>Feil passord.</span>

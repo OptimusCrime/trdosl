@@ -1,5 +1,11 @@
+import { Entry, LatLng } from '../../../common/types';
+import { LineBuilderFragment } from '../../../lineBuilder/types';
+
 export interface GlobalState {
-  entryModal: number | null;
+  entries: Entry[];
+  fragments: LineBuilderFragment[];
+  currentPosition: LatLng | null;
   distanceCompleted: number | null;
   distanceRemaining: number | null;
+  entryModal: number | null;
 }

@@ -1,8 +1,11 @@
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 
-import { deleteCookie, getCookie } from '../auth';
-import { ADD_MODAL_ID, LOGIN_MODAL_ID } from '../components';
+import { useAuth } from '../api/queries/auth';
+import { queryKeys } from '../api/queries/queryKeys';
+import { deleteCookie } from '../auth';
+import { LOGIN_MODAL_ID } from '../components';
 import { useAppSelector } from '../store/hooks';
 import { ReducerNames } from '../store/reducers/reducerNames';
 import { formatDistance } from '../utils/dataFormatters';
@@ -13,10 +16,12 @@ import { Menu } from './Menu';
 export const Header = () => {
   const { distanceRemaining, distanceCompleted } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
 
+  const queryClient = useQueryClient();
+  const auth = useAuth();
   const history = useHistory();
   const location = useLocation();
+
   const path = location.pathname;
-  const signedIn = getCookie() !== '';
 
   return (
     <div className="navbar p-0">
@@ -60,7 +65,7 @@ export const Header = () => {
                 Innlegg
               </a>
             </li>
-            {signedIn ? (
+            {auth.isSuccess && auth.data && (
               <>
                 <li>
                   <a
@@ -68,7 +73,8 @@ export const Header = () => {
                     className="normal-case text-sm"
                     onClick={(e) => {
                       e.preventDefault();
-                      showModal(ADD_MODAL_ID);
+
+                      history.push(URLS.ADD_ENTRY);
                     }}
                   >
                     Legg til
@@ -78,18 +84,22 @@ export const Header = () => {
                   <a
                     href="#"
                     className="normal-case text-sm"
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.preventDefault();
 
                       deleteCookie();
-                      window.location.replace(URLS.MAP);
+
+                      await queryClient.invalidateQueries({
+                        queryKey: queryKeys.auth,
+                      });
                     }}
                   >
                     Logg ut
                   </a>
                 </li>
               </>
-            ) : (
+            )}
+            {auth.isSuccess && !auth.data && (
               <li>
                 <a
                   href="#"

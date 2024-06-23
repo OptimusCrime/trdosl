@@ -1,16 +1,15 @@
 package com.optimuscrime.trdosl.services.db.domain
 
-import java.time.LocalDate
 import java.util.*
 
 enum class EntryType(val value: String) {
-    RUN("run"), WALK("walk"), THREADMILL("threadmill")
+    RUN("run"), WALK("walk"), TREADMILL("treadmill")
 }
 
 fun stringToEntryType(value: String?): EntryType = when(value) {
     EntryType.RUN.value -> EntryType.RUN
     EntryType.WALK.value -> EntryType.WALK
-    EntryType.THREADMILL.value -> EntryType.THREADMILL
+    EntryType.TREADMILL.value -> EntryType.TREADMILL
     else -> throw Exception("Invalid values passed as type")
 }
 

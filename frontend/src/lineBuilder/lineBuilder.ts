@@ -101,8 +101,14 @@ const constructFragments = (params: {
     //    as the initial point for the next fragment.
     it.insert(intermediatePoint);
 
-    // 4. Add the remaining length
-    totalDistance += stepDistance;
+    // 4. Calculate the distance from the current point to the intermediate point
+    const intermediatePointStepDistance = calculateDistance({
+      from: it.get(),
+      to: intermediatePoint,
+    });
+
+    // 5. Add the distance to the intermediate point
+    totalDistance += intermediatePointStepDistance;
 
     // 5. Advance the iterator one step, so that the current point is not evaluated twice
     it.goForwards();

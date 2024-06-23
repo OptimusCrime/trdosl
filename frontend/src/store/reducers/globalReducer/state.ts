@@ -1,9 +1,12 @@
 import { GlobalState } from './types';
 
 const fallbackInitialState: GlobalState = {
-  entryModal: null,
+  entries: [],
+  fragments: [],
+  currentPosition: null,
   distanceCompleted: null,
   distanceRemaining: null,
+  entryModal: null,
 };
 
 export const getInitialState = (): GlobalState => {

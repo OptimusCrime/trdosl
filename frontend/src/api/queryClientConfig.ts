@@ -5,11 +5,7 @@ export const queryClientConfig: QueryClientConfig = {
   defaultOptions: {
     queries: {
       retry(failureCount, error) {
-        if (error instanceof HTTPError && error.response.status >= 500 && failureCount < 3) {
-          return true;
-        }
-
-        return false;
+        return error instanceof HTTPError && error.response.status >= 500 && failureCount < 3;
       },
     },
   },

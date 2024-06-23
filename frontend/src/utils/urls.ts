@@ -1,4 +1,5 @@
 export const URLS = {
   MAP: '/',
-  ENTRIES: '/entries',
+  ENTRIES: '/innlegg',
+  ADD_ENTRY: '/legg-til',
 };
