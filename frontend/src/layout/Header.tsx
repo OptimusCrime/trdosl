@@ -72,8 +72,8 @@ export const Header = () => {
               <>
                 <li>
                   <a
-                    href="#"
-                    className="normal-case text-sm"
+                    href={URLS.ADD_ENTRY}
+                    className={`normal-case text-sm ${path === URLS.ADD_ENTRY ? 'bg-base-200' : ''}`}
                     onClick={(e) => {
                       e.preventDefault();
 
@@ -122,7 +122,7 @@ export const Header = () => {
           </ul>
         </div>
         <a
-          href="#"
+          href={URLS.MAP}
           className="normal-case text-xl"
           onClick={(e) => {
             e.preventDefault();

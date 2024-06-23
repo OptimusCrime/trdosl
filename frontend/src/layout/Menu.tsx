@@ -53,8 +53,8 @@ export const Menu = () => {
           <>
             <li>
               <a
-                href="#"
-                className="normal-case text-sm"
+                href={URLS.ADD_ENTRY}
+                className={`normal-case text-sm ${path === URLS.ADD_ENTRY ? 'bg-base-200' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
 
