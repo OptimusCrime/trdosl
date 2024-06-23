@@ -1,6 +1,7 @@
-import { Map, useMap } from '@vis.gl/react-google-maps';
+import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import React, { useEffect } from 'react';
 
+import { Entry, EntryType } from '../../../common/types';
 import data from '../../../data/data.json';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setEntryModal } from '../../../store/reducers/globalReducer';
@@ -11,11 +12,44 @@ export const EntriesMap = () => {
 
   const dispatch = useAppDispatch();
   const map = useMap();
+  const coreLib = useMapsLibrary('core');
 
   useEffect(() => {
-    if (!map) {
+    if (!map || !coreLib) {
       return;
     }
+
+    const meIcon: google.maps.Icon = {
+      url: 'https://trdosl.optimuscrime.net/static/markers/me.png',
+      scaledSize: new coreLib.Size(40, 51),
+    };
+
+    const runningIcon: google.maps.Icon = {
+      url: 'https://trdosl.optimuscrime.net/static/markers/running.png',
+      scaledSize: new coreLib.Size(40, 51),
+    };
+
+    const treadmillIcon: google.maps.Icon = {
+      url: 'https://trdosl.optimuscrime.net/static/markers/treadmill.png',
+      scaledSize: new coreLib.Size(40, 51),
+    };
+
+    const walkingIcon: google.maps.Icon = {
+      url: 'https://trdosl.optimuscrime.net/static/markers/walking.png',
+      scaledSize: new coreLib.Size(40, 51),
+    };
+
+    const getIcon = (entry: Entry): google.maps.Icon => {
+      switch (entry.type) {
+        case EntryType.TREADMILL:
+          return treadmillIcon;
+        case EntryType.WALK:
+          return walkingIcon;
+        case EntryType.RUN:
+        default:
+          return runningIcon;
+      }
+    };
 
     for (const fragment of fragments) {
       const path = new google.maps.Polyline({
@@ -32,6 +66,7 @@ export const EntriesMap = () => {
         const marker = new google.maps.Marker({
           position: fragment.points[0],
           map: map,
+          icon: getIcon(fragment.entry),
         });
 
         marker.addListener('click', () => {
@@ -50,6 +85,7 @@ export const EntriesMap = () => {
       position: currentPosition,
       title: 'Current position',
       map: map,
+      icon: meIcon,
     });
 
     // Set the default position to where we currently are on the road
