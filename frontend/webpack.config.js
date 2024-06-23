@@ -52,8 +52,8 @@ module.exports = () => {
     plugins: [
       new Dotenv(),
       new FaviconsWebpackPlugin({
-        logo: path.join(__dirname, 'src', 'icons', 'app-icon.png'),
-        prefix: 'static/icons/',
+        logo: path.join(__dirname, 'src', 'fav', 'app-icon.png'),
+        prefix: 'static/fav/',
         favicons: {
           appName: 'TRD-OSL',
           start_url: '/',
