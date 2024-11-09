@@ -15,7 +15,7 @@ export const ENTRY_MODAL_CURRENT_POSITION_ID = -999999999;
 const ENTRY_MODAL_ID = 'entry_modal_id';
 
 export const EntryModal = () => {
-  const { entries, entryModal, distanceCompleted, distanceRemaining } = useAppSelector(
+  const { entries, entryModal, distanceCompleted, distanceRemaining, distanceTotal } = useAppSelector(
     (state) => state[ReducerNames.GLOBAL],
   );
 
@@ -40,8 +40,9 @@ export const EntryModal = () => {
           <div className="flex flex-col space-y-2">
             {distanceCompleted && <p>Fullført distanse: {formatDistance(distanceCompleted)}</p>}
             {distanceRemaining && <p>Gjenværende distanse: {formatDistance(distanceRemaining)}</p>}
-            {distanceCompleted && distanceRemaining && (
-              <p>Fullført: {((distanceCompleted / distanceRemaining) * 100).toFixed(2)}%</p>
+            {distanceTotal && <p>Total distanse: {formatDistance(distanceTotal)}</p>}
+            {distanceCompleted && distanceTotal && (
+              <p>Fullført: {((distanceCompleted / distanceTotal) * 100).toFixed(2)}%</p>
             )}
           </div>
           <div className="flex flex-col space-y-2">

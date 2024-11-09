@@ -25,6 +25,7 @@ const globalReducer = createSlice({
 
       state.distanceRemaining = distanceRemaining;
       state.distanceCompleted = distanceCompleted;
+      state.distanceTotal = distanceRemaining + distanceCompleted;
       state.currentPosition = currentPosition;
     },
     setEntryModal(state, action: PayloadAction<number | null>) {

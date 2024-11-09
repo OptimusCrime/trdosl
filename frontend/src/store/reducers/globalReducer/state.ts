@@ -6,6 +6,7 @@ const fallbackInitialState: GlobalState = {
   currentPosition: null,
   distanceCompleted: null,
   distanceRemaining: null,
+  distanceTotal: null,
   entryModal: null,
 };
 

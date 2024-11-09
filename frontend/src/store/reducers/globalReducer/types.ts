@@ -7,5 +7,6 @@ export interface GlobalState {
   currentPosition: LatLng | null;
   distanceCompleted: number | null;
   distanceRemaining: number | null;
+  distanceTotal: number | null;
   entryModal: number | null;
 }

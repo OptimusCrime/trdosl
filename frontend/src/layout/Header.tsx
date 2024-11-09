@@ -15,7 +15,7 @@ import { closeMenu } from './closeMenu';
 import { Menu } from './Menu';
 
 export const Header = () => {
-  const { distanceRemaining, distanceCompleted } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
+  const { distanceTotal, distanceCompleted } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
 
   const queryClient = useQueryClient();
   const auth = useAuth();
@@ -54,6 +54,24 @@ export const Header = () => {
                 Kart
               </a>
             </li>
+
+            {auth.isSuccess && auth.data && (
+              <li>
+                <a
+                  href={URLS.ADD_ENTRY}
+                  className={`normal-case text-sm ${path === URLS.ADD_ENTRY ? 'bg-base-200' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+
+                    history.push(URLS.ADD_ENTRY);
+                    closeMenu();
+                  }}
+                >
+                  Legg til
+                </a>
+              </li>
+            )}
+
             <li>
               <a
                 href={URLS.ENTRIES}
@@ -68,41 +86,26 @@ export const Header = () => {
                 Innlegg
               </a>
             </li>
+
             {auth.isSuccess && auth.data && (
-              <>
-                <li>
-                  <a
-                    href={URLS.ADD_ENTRY}
-                    className={`normal-case text-sm ${path === URLS.ADD_ENTRY ? 'bg-base-200' : ''}`}
-                    onClick={(e) => {
-                      e.preventDefault();
+              <li>
+                <a
+                  href="#"
+                  className="normal-case text-sm"
+                  onClick={async (e) => {
+                    e.preventDefault();
 
-                      history.push(URLS.ADD_ENTRY);
-                      closeMenu();
-                    }}
-                  >
-                    Legg til
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="normal-case text-sm"
-                    onClick={async (e) => {
-                      e.preventDefault();
+                    deleteCookie();
 
-                      deleteCookie();
-
-                      await queryClient.invalidateQueries({
-                        queryKey: queryKeys.auth,
-                      });
-                      closeMenu();
-                    }}
-                  >
-                    Logg ut
-                  </a>
-                </li>
-              </>
+                    await queryClient.invalidateQueries({
+                      queryKey: queryKeys.auth,
+                    });
+                    closeMenu();
+                  }}
+                >
+                  Logg ut
+                </a>
+              </li>
             )}
             {auth.isSuccess && !auth.data && (
               <li>
@@ -135,9 +138,9 @@ export const Header = () => {
         </a>
       </div>
       <div className="text-center lg:w-[400px]">
-        {distanceRemaining !== null && distanceCompleted !== null && (
+        {distanceTotal !== null && distanceCompleted !== null && (
           <>
-            {formatDistance(distanceCompleted)} / {formatDistance(distanceRemaining)}
+            {formatDistance(distanceCompleted)} / {formatDistance(distanceTotal)}
           </>
         )}
       </div>

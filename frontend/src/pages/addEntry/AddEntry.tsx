@@ -101,6 +101,7 @@ export const AddEntry = () => {
             </select>
           </div>
         </div>
+
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Tid</span>
@@ -143,6 +144,7 @@ export const AddEntry = () => {
             </select>
           </div>
         </div>
+
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Distanse</span>
@@ -176,7 +178,10 @@ export const AddEntry = () => {
           <div className="label">
             <span className="label-text">Kommentar</span>
           </div>
-          <textarea className="textarea textarea-bordered h-24" onChange={(e) => setComment(e.target.value)} />
+          <textarea
+            className="textarea textarea-bordered h-24 text-base"
+            onChange={(e) => setComment(e.target.value)}
+          />
         </label>
         <div className="w-full flex justify-end">
           <button className="btn btn-primary" disabled={postEntry.isLoading} onClick={addCallback}>
