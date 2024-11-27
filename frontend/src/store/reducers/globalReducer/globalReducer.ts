@@ -16,7 +16,7 @@ const globalReducer = createSlice({
 
       const fragments = buildFragments({
         entries: action.payload.entries,
-        points: data,
+        points: data.map(entry => ({ "lat": entry[0], "lng": entry[1] })),
       });
 
       state.fragments = fragments;

@@ -112,7 +112,7 @@ export const EntriesMap = () => {
         width: '100%',
         height: 'calc(100vh - 4rem)',
       }}
-      defaultCenter={data[0]}
+      defaultCenter={{lat: data[0][0], lng: data[1][1]}}
       defaultZoom={11}
       gestureHandling="greedy"
       disableDefaultUI={true}
