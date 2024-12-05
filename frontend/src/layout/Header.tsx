@@ -134,7 +134,7 @@ export const Header = () => {
             closeMenu();
           }}
         >
-          TRD-OSL
+          NOREG
         </a>
       </div>
       <div className="text-center lg:w-[400px]">

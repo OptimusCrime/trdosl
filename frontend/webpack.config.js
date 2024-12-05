@@ -55,9 +55,9 @@ module.exports = () => {
         logo: path.join(__dirname, 'src', 'fav', 'app-icon.png'),
         prefix: 'static/fav/',
         favicons: {
-          appName: 'TRD-OSL',
+          appName: 'NOREG',
           start_url: '/',
-          appDescription: 'TRD-OSL',
+          appDescription: 'NOREG',
           background: '#ff6e6e',
           theme_color: '#ff6e6e',
           developerName: 'OptimusCrime',
