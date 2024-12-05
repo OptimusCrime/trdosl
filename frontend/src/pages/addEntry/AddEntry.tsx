@@ -7,15 +7,23 @@ import { queryKeys } from '../../api/queries/queryKeys';
 import { EntryType } from '../../common/types';
 import { CheckIcon, XIcon } from '../../icons';
 import { formatEntryType } from '../../utils/dataFormatters';
-import { addLeadingZero } from '../../utils/date';
+import { addLeadingZero, addLeadingZeroString, MONTHS } from '../../utils/date';
+import { toUppercaseFirst } from '../../utils/strings';
 import { URLS } from '../../utils/urls';
 import { AddEntryWrapper } from './components';
 
 const DEFAULT_TYPE = EntryType.RUN;
 
+// Work smarter, not harder
+const DATE_YEAR_OPTIONS = [new Date().getFullYear() - 1, new Date().getFullYear(), new Date().getFullYear() + 1];
+
 const DEFAULT_TIME_HOURS = '00';
 const DEFAULT_TIME_MINUTES = '25';
 const DEFAULT_TIME_SECONDS = '00';
+
+const DEFAULT_DATE_DAY = addLeadingZero(new Date().getDate());
+const DEFAULT_DATE_MONTH = addLeadingZero(new Date().getMonth() + 1);
+const DEFAULT_DATE_YEAR = new Date().getFullYear().toString();
 
 const DEFAULT_DISTANCE_KM = '5';
 const DEFAULT_DISTANCE_DM = '00';
@@ -29,6 +37,10 @@ export const AddEntry = () => {
   const [saved, setSaved] = useState<boolean>(false);
   const [type, setType] = useState<EntryType>(EntryType.RUN);
 
+  const [dateDay, setDateDay] = useState<string>(DEFAULT_DATE_DAY);
+  const [dateMonth, setDateMonth] = useState<string>(DEFAULT_DATE_MONTH);
+  const [dateYear, setDateYear] = useState<string>(DEFAULT_DATE_YEAR);
+
   const [timeHours, setTimeHours] = useState<string>(DEFAULT_TIME_HOURS);
   const [timeMinutes, setTimeMinutes] = useState<string>(DEFAULT_TIME_MINUTES);
   const [timeSeconds, setTimeSeconds] = useState<string>(DEFAULT_TIME_SECONDS);
@@ -41,6 +53,7 @@ export const AddEntry = () => {
   const addCallback = () => {
     postEntry.mutate(
       {
+        date: `${dateYear}-${dateMonth}-${dateDay}`,
         type: type,
         runTime: `${timeHours}:${timeMinutes}:${timeSeconds}`,
         runDistance: parseInt(distanceKm) * 1000 + parseInt(distanceDm) * 10,
@@ -98,6 +111,53 @@ export const AddEntry = () => {
               <option value={EntryType.RUN}>{formatEntryType(EntryType.RUN)}</option>
               <option value={EntryType.TREADMILL}>{formatEntryType(EntryType.TREADMILL)}</option>
               <option value={EntryType.WALK}>{formatEntryType(EntryType.WALK)}</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Dato</span>
+          </label>
+          <div className="flex flex-row justify-between items-center max-w-[350px]">
+            <select
+              className="select select-bordered max-w-xs"
+              defaultValue={DEFAULT_DATE_DAY}
+              onChange={(e) => setDateDay(addLeadingZeroString(e.target.value))}
+            >
+              {Array.from(Array(32).keys())
+                .filter((value) => value !== 0)
+                .map((value) => (
+                  <option key={`date_day_${value}`} value={addLeadingZero(value)}>
+                    {`${value}.`}
+                  </option>
+                ))}
+            </select>
+            <div className="flex">-</div>
+            <select
+              className="select select-bordered max-w-xs"
+              defaultValue={DEFAULT_DATE_MONTH}
+              onChange={(e) => setDateMonth(addLeadingZeroString(e.target.value))}
+            >
+              {Array.from(Array(13).keys())
+                .filter((value) => value !== 0)
+                .map((value) => (
+                  <option key={`date_month_${value}`} value={addLeadingZero(value)}>
+                    {toUppercaseFirst(MONTHS[value - 1])}
+                  </option>
+                ))}
+            </select>
+            <div className="flex">-</div>
+            <select
+              className="select select-bordered max-w-xs"
+              defaultValue={DEFAULT_DATE_YEAR}
+              onChange={(e) => setDateYear(e.target.value)}
+            >
+              {DATE_YEAR_OPTIONS.map((value) => (
+                <option key={`date_year_${value}`} value={value}>
+                  {value}
+                </option>
+              ))}
             </select>
           </div>
         </div>

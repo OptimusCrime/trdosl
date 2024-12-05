@@ -1,13 +1,10 @@
 import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
 import React, { useEffect } from 'react';
 
-import { Entry, EntryType } from '../../../common/types';
 import data from '../../../data/data.json';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setEntryModal } from '../../../store/reducers/globalReducer';
 import { ReducerNames } from '../../../store/reducers/reducerNames';
-import { formatEntryType } from '../../../utils/dataFormatters';
-import { formatDate } from '../../../utils/date';
 import { ENTRY_MODAL_CURRENT_POSITION_ID } from './EntryModal';
 
 const MARKERS_BASE_URL = 'https://trdosl.optimuscrime.net/static/markers/';
@@ -29,6 +26,7 @@ export const EntriesMap = () => {
       scaledSize: new coreLib.Size(50, 64),
     };
 
+    /*
     const runningIcon: google.maps.Icon = {
       url: `${MARKERS_BASE_URL}/running.png`,
       scaledSize: new coreLib.Size(50, 64),
@@ -44,7 +42,7 @@ export const EntriesMap = () => {
       scaledSize: new coreLib.Size(50, 64),
     };
 
-    const getIcon = (entry: Entry): google.maps.Icon => {
+     const getIcon = (entry: Entry): google.maps.Icon => {
       switch (entry.type) {
         case EntryType.TREADMILL:
           return treadmillIcon;
@@ -55,18 +53,20 @@ export const EntriesMap = () => {
           return runningIcon;
       }
     };
+     */
 
     for (const fragment of fragments) {
       const path = new google.maps.Polyline({
         path: fragment.points,
         geodesic: true,
 
-        // Use a random color if the polyline is for an entry. The remaining line should always be red
-        strokeColor: fragment.entry ? '#' + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0') : '#d22b2b',
+        // Green color if the fragment has been completed, red otherwise
+        strokeColor: fragment.entry ? '#3cd22b' : '#d22b2b',
         strokeOpacity: 1.0,
         strokeWeight: 4,
       });
 
+      /*
       if (fragment.entry) {
         const { entry, points } = fragment;
 
@@ -85,6 +85,7 @@ export const EntriesMap = () => {
           dispatch(setEntryModal(entry.id));
         });
       }
+       */
 
       path.setMap(map);
     }

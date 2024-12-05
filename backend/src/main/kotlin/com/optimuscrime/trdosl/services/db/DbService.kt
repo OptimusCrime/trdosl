@@ -1,9 +1,9 @@
 package com.optimuscrime.trdosl.services.db
 
-import com.optimuscrime.trdosl.services.db.domain.CreateEntry
 import com.optimuscrime.trdosl.services.db.exceptions.DatabaseException
 import com.optimuscrime.trdosl.services.db.exceptions.ResourceNotFoundException
 import com.optimuscrime.trdosl.services.db.domain.Entry
+import com.optimuscrime.trdosl.services.db.domain.EntryType
 import com.optimuscrime.trdosl.services.db.domain.stringToEntryType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Service
 import java.sql.Date
 import java.sql.ResultSet
-import java.time.Instant
 
 @Service
 class DbService(
@@ -102,7 +101,13 @@ class DbService(
         }
     }
 
-    fun createEntry(data: CreateEntry) {
+    fun createEntry(
+        date: Date,
+        type: EntryType,
+        runDistance: Int,
+        runTime: String,
+        comment: String?
+    ) {
         val sql = """
             INSERT INTO entry(
               type, run_date, run_distance, run_time, comment
@@ -111,11 +116,11 @@ class DbService(
             """.trimIndent()
 
         jdbcTemplate.update(sql) { ps ->
-            ps.setString(1, data.type.value)
-            ps.setDate(2, Date(java.util.Date().time))
-            ps.setInt(3, data.runDistance)
-            ps.setString(4, data.runTime)
-            ps.setString(5, data.comment)
+            ps.setString(1, type.value)
+            ps.setDate(2, date)
+            ps.setInt(3, runDistance)
+            ps.setString(4, runTime)
+            ps.setString(5, comment)
         }
     }
 }

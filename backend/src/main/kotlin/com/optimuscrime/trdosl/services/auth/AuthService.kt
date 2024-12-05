@@ -7,7 +7,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.stereotype.Service
 import java.util.*
 
-
 const val AUTH_TOKEN_ENV_NAME = "AUTH_TOKEN"
 const val PASSWORD_ENV_NAME = "PINAPLEEEEE"
 

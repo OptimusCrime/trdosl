@@ -1,0 +1,11 @@
+https://maps.googleapis.com/maps/api/directions/json
+  ?destination=place_id:ChIJX0t7zfl3N0YRl1aIh7_dd_I
+  &origin=place_id:ChIJ577o5x2syUURaeAMzfMlZu8
+  &waypoints=place_id:ChIJ58Rb_zM2xUURZp5vodgdS_o|place_id:ChIJU34DR5cxbUYR1PM8jyjI9ws|place_id:ChIJn9JiOjzmakYRfV2oDzdD_7I|place_id:ChIJJSwTIZAHQUYRI-SOXL5f1D8
+  &key=<key>
+
+Waypoints ( https://developers.google.com/maps/documentation/places/web-service/place-id ):
+- Skibotn
+- Trondheim
+- Ringebu
+- Klækken hotell

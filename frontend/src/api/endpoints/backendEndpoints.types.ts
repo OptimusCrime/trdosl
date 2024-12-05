@@ -9,6 +9,7 @@ export namespace BackendEndpoints {
 
     export namespace POST {
       export interface Payload {
+        date: string;
         type: EntryType;
         runTime: string;
         runDistance: number;

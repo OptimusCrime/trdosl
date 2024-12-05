@@ -4,7 +4,6 @@ import com.optimuscrime.trdosl.api.entry.dto.DTOEntriesResponse
 import com.optimuscrime.trdosl.api.entry.dto.DTOEntryCreatePayload
 import com.optimuscrime.trdosl.services.db.DbService
 import com.optimuscrime.trdosl.services.auth.AuthService
-import com.optimuscrime.trdosl.services.db.domain.CreateEntry
 import com.optimuscrime.trdosl.services.db.exceptions.AuthorizationException
 import com.optimuscrime.trdosl.services.db.exceptions.ResourceNotFoundException
 import org.slf4j.Logger
@@ -15,6 +14,7 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import java.sql.Date
 
 val runTimeExpression = """^[0-9]{2}:[0-9]{2}:[0-9]{2}$""".toRegex()
 
@@ -30,7 +30,7 @@ class EntryController(
         method = [RequestMethod.GET],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net"])
+    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net", "https://noreg.optimuscrime.net"])
     @ResponseBody
     fun getEntries(): DTOEntriesResponse {
         try {
@@ -55,7 +55,7 @@ class EntryController(
         method = [RequestMethod.POST],
         consumes = ["application/json"]
     )
-    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net"])
+    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net", "https://noreg.optimuscrime.net"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun createEntry(
         @RequestBody body: DTOEntryCreatePayload,
@@ -70,13 +70,14 @@ class EntryController(
                 throw ResponseStatusException(HttpStatus.BAD_REQUEST)
             }
 
+            val date = Date.valueOf(body.date)
+
             dbService.createEntry(
-                CreateEntry(
-                    type = body.type,
-                    runTime = body.runTime,
-                    runDistance = body.runDistance,
-                    comment = body.comment
-                )
+                date = date,
+                type = body.type,
+                runTime = body.runTime,
+                runDistance = body.runDistance,
+                comment = body.comment
             )
         } catch (ex: Exception) {
             if (ex is AuthorizationException) {
@@ -93,7 +94,7 @@ class EntryController(
         "/v1/entry/{entryId}",
         method = [RequestMethod.DELETE],
     )
-    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net"])
+    @CrossOrigin(origins = ["http://localhost:3000", "https://trdosl.optimuscrime.net", "https://noreg.optimuscrime.net"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteEntry(
         @PathVariable(value = "entryId") entryId: Int,
