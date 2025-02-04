@@ -9,4 +9,5 @@ export interface GlobalState {
   distanceRemaining: number | null;
   distanceTotal: number | null;
   entryModal: number | null;
+  hideFace: boolean;
 }

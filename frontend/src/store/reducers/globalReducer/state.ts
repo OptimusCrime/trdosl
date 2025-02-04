@@ -1,3 +1,4 @@
+import { getItem, LocalStorageKeys } from '../../../utils/localStorage';
 import { GlobalState } from './types';
 
 const fallbackInitialState: GlobalState = {
@@ -8,6 +9,7 @@ const fallbackInitialState: GlobalState = {
   distanceRemaining: null,
   distanceTotal: null,
   entryModal: null,
+  hideFace: getItem(LocalStorageKeys.HIDE_FACE, 'false') === 'true',
 };
 
 export const getInitialState = (): GlobalState => {

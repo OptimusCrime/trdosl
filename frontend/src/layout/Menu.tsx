@@ -6,11 +6,17 @@ import { useAuth } from '../api/queries/auth';
 import { queryKeys } from '../api/queries/queryKeys';
 import { deleteCookie } from '../auth';
 import { LOGIN_MODAL_ID } from '../components';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { toggleHideFace } from '../store/reducers/globalReducer';
+import { ReducerNames } from '../store/reducers/reducerNames';
 import { showModal } from '../utils/modal';
 import { URLS } from '../utils/urls';
 import { closeMenu } from './closeMenu';
 
 export const Menu = () => {
+  const { hideFace } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
+
+  const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const history = useHistory();
   const location = useLocation();
@@ -47,6 +53,19 @@ export const Menu = () => {
             }}
           >
             Innlegg
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            className="normal-case text-sm"
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(toggleHideFace());
+              closeMenu();
+            }}
+          >
+            {hideFace ? 'Vis ansikt' : 'Fjern ansikt'}
           </a>
         </li>
         {auth.isSuccess && auth.data && (

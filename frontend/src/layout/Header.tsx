@@ -6,7 +6,8 @@ import { useAuth } from '../api/queries/auth';
 import { queryKeys } from '../api/queries/queryKeys';
 import { deleteCookie } from '../auth';
 import { LOGIN_MODAL_ID } from '../components';
-import { useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { toggleHideFace } from '../store/reducers/globalReducer';
 import { ReducerNames } from '../store/reducers/reducerNames';
 import { formatDistance } from '../utils/dataFormatters';
 import { showModal } from '../utils/modal';
@@ -15,8 +16,9 @@ import { closeMenu } from './closeMenu';
 import { Menu } from './Menu';
 
 export const Header = () => {
-  const { distanceTotal, distanceCompleted } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
+  const { distanceTotal, distanceCompleted, hideFace } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
 
+  const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   const auth = useAuth();
   const history = useHistory();
@@ -84,6 +86,19 @@ export const Header = () => {
                 }}
               >
                 Innlegg
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="normal-case text-sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(toggleHideFace());
+                  closeMenu();
+                }}
+              >
+                {hideFace ? 'Vis ansikt' : 'Fjern ansikt'}
               </a>
             </li>
 

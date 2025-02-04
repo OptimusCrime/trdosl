@@ -1,5 +1,5 @@
 import { Map, useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import data from '../../../data/data.json';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
@@ -10,11 +10,15 @@ import { ENTRY_MODAL_CURRENT_POSITION_ID } from './EntryModal';
 const MARKERS_BASE_URL = 'https://trdosl.optimuscrime.net/static/markers/';
 
 export const EntriesMap = () => {
-  const { entries, fragments, currentPosition } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
+  const { entries, fragments, currentPosition, hideFace } = useAppSelector((state) => state[ReducerNames.GLOBAL]);
 
   const dispatch = useAppDispatch();
   const map = useMap();
   const coreLib = useMapsLibrary('core');
+
+  // This is stupid, but I could not figure out another way of doing this
+  const [initializedMap, setInitializedMap] = useState<boolean>(false);
+  const [meMarker, setMeMarker] = useState<google.maps.Marker | null>(null);
 
   useEffect(() => {
     if (!map || !coreLib) {
@@ -25,35 +29,6 @@ export const EntriesMap = () => {
       url: `${MARKERS_BASE_URL}/me.png`,
       scaledSize: new coreLib.Size(50, 64),
     };
-
-    /*
-    const runningIcon: google.maps.Icon = {
-      url: `${MARKERS_BASE_URL}/running.png`,
-      scaledSize: new coreLib.Size(50, 64),
-    };
-
-    const treadmillIcon: google.maps.Icon = {
-      url: `${MARKERS_BASE_URL}/treadmill.png`,
-      scaledSize: new coreLib.Size(50, 64),
-    };
-
-    const walkingIcon: google.maps.Icon = {
-      url: `${MARKERS_BASE_URL}/walking.png`,
-      scaledSize: new coreLib.Size(50, 64),
-    };
-
-     const getIcon = (entry: Entry): google.maps.Icon => {
-      switch (entry.type) {
-        case EntryType.TREADMILL:
-          return treadmillIcon;
-        case EntryType.WALK:
-          return walkingIcon;
-        case EntryType.RUN:
-        default:
-          return runningIcon;
-      }
-    };
-     */
 
     for (const fragment of fragments) {
       const path = new google.maps.Polyline({
@@ -66,46 +41,34 @@ export const EntriesMap = () => {
         strokeWeight: 4,
       });
 
-      /*
-      if (fragment.entry) {
-        const { entry, points } = fragment;
-
-        const marker = new google.maps.Marker({
-          position: points[0],
-          map: map,
-          icon: getIcon(entry),
-          title: `${formatEntryType(entry.type)} - ${formatDate(new Date(entry.runDate))}`,
-        });
-
-        marker.addListener('click', () => {
-          if (entry === null) {
-            return;
-          }
-
-          dispatch(setEntryModal(entry.id));
-        });
-      }
-       */
-
       path.setMap(map);
     }
 
-    const currentPositionMarker = new google.maps.Marker({
-      position: currentPosition,
-      title: 'Nåværende posisjon',
-      map: map,
-      icon: meIcon,
-    });
+    if (!meMarker) {
+      const currentPositionMarker = new google.maps.Marker({
+        position: currentPosition,
+        title: 'Nåværende posisjon',
+        map: map,
+        icon: meIcon,
+        visible: !hideFace,
+      });
 
-    currentPositionMarker.addListener('click', () => {
-      dispatch(setEntryModal(ENTRY_MODAL_CURRENT_POSITION_ID));
-    });
+      setMeMarker(currentPositionMarker);
+
+      currentPositionMarker.addListener('click', () => {
+        dispatch(setEntryModal(ENTRY_MODAL_CURRENT_POSITION_ID));
+      });
+    } else {
+      meMarker.setVisible(!hideFace);
+    }
 
     // Set the default position to where we currently are on the road
-    if (currentPosition) {
+    if (currentPosition && !initializedMap) {
       map.setCenter(currentPosition);
     }
-  }, [map, entries]);
+
+    setInitializedMap(true);
+  }, [map, entries, hideFace]);
 
   return (
     <Map
@@ -113,7 +76,7 @@ export const EntriesMap = () => {
         width: '100%',
         height: 'calc(100vh - 4rem)',
       }}
-      defaultCenter={{lat: data[0][0], lng: data[1][1]}}
+      defaultCenter={{ lat: data[0][0], lng: data[1][1] }}
       defaultZoom={11}
       gestureHandling="greedy"
       disableDefaultUI={true}
