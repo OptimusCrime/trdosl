@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 
-const data = fs.readFileSync('./nordkapp-lindesnes-directions.json', 'utf8');
+const data = fs.readFileSync('./trip-002.json', 'utf8');
 const json = JSON.parse(data);
 console.log(json["routes"].length);
 
@@ -12,4 +12,4 @@ for (const leg of json["routes"][0]["legs"]) {
   }
 }
 
-fs.writeFileSync('polylines.json', JSON.stringify(output));
+fs.writeFileSync('polylines3.json', JSON.stringify(output));

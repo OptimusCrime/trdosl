@@ -112,7 +112,7 @@ class DbService(
             INSERT INTO entry(
               type, run_date, run_distance, run_time, comment
             ) 
-            VALUES (?::entry_type, ?, ?, ?, ?) 
+            VALUES (?, ?, ?, ?, ?) 
             """.trimIndent()
 
         jdbcTemplate.update(sql) { ps ->

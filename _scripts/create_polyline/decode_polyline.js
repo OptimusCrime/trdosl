@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const decodePolyline = require('decode-google-map-polyline');
 
-const data = fs.readFileSync('./polylines.json', 'utf8');
+const data = fs.readFileSync('./polylines3.json', 'utf8');
 const json = JSON.parse(data);
 
 const output = [];
@@ -11,9 +11,9 @@ for (const line of json) {
   output.push(...parsed);
 }
 
-const formatted = [];
+let formatted = '';
 for (const line of output) {
-  formatted.push([line["lat"], line["lng"]]);
+  formatted += `${line["lat"]},${line["lng"]}\n`;
 }
 
-fs.writeFileSync('output.json', JSON.stringify(formatted));
+fs.writeFileSync('output3.txt', formatted);
