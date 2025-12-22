@@ -16,7 +16,7 @@ spring:
     name: trdosl
 
   datasource:
-    url: jdbc:sqlite:./database/trdosl.db
+    url: jdbc:sqlite:${DB_PATH:./database/trdosl.db}
     driver-class-name: org.sqlite.JDBC
     username: sa
     password: sa
